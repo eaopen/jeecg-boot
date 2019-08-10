@@ -1,20 +1,65 @@
-Jeecg-Boot 快速开发平台(前后端分离版本)
+
+![JEECG](https://static.oschina.net/uploads/img/201905/24164523_XDhg.png "JeecgBoot快速开发平台")
+
+
+
+Jeecg-Boot 快速开发平台（前后端分离版本）
 ===============
 
-当前最新版本： 2.0.0（发布日期：20190520）
+当前最新版本： 2.0.2（发布日期：20190708）
+
+[![AUR](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE)
+[![](https://img.shields.io/badge/Author-JEECG团队-orange.svg)](http://www.jeecg.com)
+[![](https://img.shields.io/badge/version-2.0-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
+[![GitHub stars](https://img.shields.io/github/stars/zhangdaiscott/jeecg-boot.svg?style=social&label=Stars)](https://github.com/zhangdaiscott/jeecg-boot)
+[![GitHub forks](https://img.shields.io/github/forks/zhangdaiscott/jeecg-boot.svg?style=social&label=Fork)](https://github.com/zhangdaiscott/jeecg-boot)
+
+
 
 项目介绍：
 -----------------------------------
-Jeecg-boot 是一款基于代码生成器的智能开发平台! 采用前后端分离技术:SpringBoot，Mybatis-plus，Shiro，JWT，Vue & Ant Design。提供强大的代码生成器，
-前端页面代码和后端代码一键生成，不需要写任何代码，保持jeecg一贯的强大，绝对是全栈开发者福音！！
-JeecgBoot的宗旨是降低前后端分离的开发成本，提高UI能力的同时，提高开发效率，追求更高的能力，No代码概念，一系列智能化在线开发。
 
-JEECG宗旨是: 简单功能由Online Coding配置实现，NO代码；复杂功能由代码生成器生成进行手工Merge; 复杂业务流程采用表单自定义，业务流程使用工作流来实现、扩展出任务接口，供开发编写业务逻辑。实现了流程任务节点和任务接口的灵活配置，既保证了公司流程的保密性，又减少了开发人员的工作量。
+<h3 align="center">Java RAD framework for enterprise web applications</h3>
+
+Jeecg-Boot 是一款基于SpringBoot+代码生成器的快速开发平台！前后端分离架构：SpringBoot,Ant Design Vue,Mybatis,Shiro,JWT。强大的代码生成器让前端和后台代码一键生成，不需要写任何代码，保持jeecg一贯的强大，绝对是全栈开发福音！！ JeecgBoot在提高UI能力的同时，降低了前后分离的开发成本，JeecgBoot还独创在线开发模式（No代码概念），一系列在线智能开发：在线配置表单、在线配置报表、在线图表设计、在线设计流程等等。
+
+JEECG宗旨是: 简单功能由Online Coding配置实现（在线配置表单、在线配置报表、在线图表设计、在线设计流程、在线设计表单），复杂功能由代码生成器生成进行手工Merge，既保证了智能又兼顾了灵活; 
+业务流程采用工作流来实现、扩展出任务接口，供开发编写业务逻辑，表单提供多种解决方案： 表单设计器、online配置表单、编码表单。同时实现了流程与表单的分离设计（松耦合）、并支持任务节点灵活配置，既保证了公司流程的保密性，又减少了开发人员的工作量。
 
 
 适用项目
 -----------------------------------
 Jeecg-Boot快速开发平台，可以应用在任何J2EE项目的开发中，尤其适合企业信息管理系统（MIS）、内部办公系统（OA）、企业资源计划系统（ERP）、客户关系管理系统（CRM）等，其半智能手工Merge的开发方式，可以显著提高开发效率70%以上，极大降低开发成本。
+
+
+
+技术文档
+-----------------------------------
+
+- 在线演示 ：  [http://boot.jeecg.com](http://boot.jeecg.com)
+
+- 技术官网：  [http://www.jeecg.com](http://www.jeecg.com)
+
+- 开发文档：  [http://jeecg-boot.mydoc.io/?t=345660](http://jeecg-boot.mydoc.io/?t=345660)
+
+- 视频教程  ：[JeecgBoot实战入门系列视频](https://space.bilibili.com/454617261/channel/detail?cid=84186)
+
+- 常见问题：  [入门常见问题大全](http://www.jeecg.org/forum.php?mod=viewthread&tid=7816&extra=page%3D1)
+
+- 更新日志：  [版本日志](http://www.jeecg.com/#/doc/changelog)
+
+
+
+交流互动
+-----------------------------------
+
+- QQ交流群 ：  ①284271917、②769925425
+
+- 反馈问题：  [反馈问题，请按格式发Issues](https://github.com/zhangdaiscott/jeecg-boot/issues/new)
+
+- 参与开源：  [欢迎加入JEECG开源团队，共同进步！！](http://www.jeecg.com/#/doc/canyu-os)
+
+- Online一分钟：  [1分钟快速学习](https://my.oschina.net/jeecg/blog/3061917)
 
 
 为什么选择JEECG-BOOT?
@@ -35,7 +80,7 @@ Jeecg-Boot快速开发平台，可以应用在任何J2EE项目的开发中，尤
 * 14.在线流程设计，采用开源Activiti流程引擎，实现在线画流程,自定义表单,表单挂靠,业务流转
 * 15.多数据源：及其简易的使用方式，在线配置数据源配置，便捷的从其他数据抓取数据；
 * 16.国际化：支持多语言，开发国际化项目非常方便；
-* 17.自定义表单，支持用户自定义表单布局，支持单表，一对多表单、支持select、radio、checkbox、textarea、date、popup、列表、宏等控件
+* 17.表单设计器，支持用户自定义表单布局，支持单表，一对多表单、支持select、radio、checkbox、textarea、date、popup、列表、宏等控件
 * 18.专业接口对接机制，统一采用restful接口方式，集成swagger-ui在线接口文档，Jwt token安全验证，方便客户端对接
 * 19.接口安全机制，可细化控制接口授权，非常简便实现不同客户端只看自己数据等控制
 * 20.高级组合查询功能，在线配置支持主子表关联查询，可保存查询历史
@@ -46,15 +91,20 @@ Jeecg-Boot快速开发平台，可以应用在任何J2EE项目的开发中，尤
 * 24.平台首页风格，提供多种组合模式，支持自定义风格
 * 25.提供简单易用的打印插件，支持谷歌、IE浏览器等各种浏览器
 * 26.示例代码丰富，提供很多学习案例参考
+* 27.采用maven分模块开发方式
+* 27.支持菜单动态路由
+* 28.权限控制采用 RBAC（Role-Based Access Control，基于角色的访问控制）
 
-
+ 
+ 
+ 
 技术架构：
 -----------------------------------
 
 #### 后端
 - 基础框架：Spring Boot 2.1.3.RELEASE
 
-- 持久层框架：Mybatis-plus_3.0.6
+- 持久层框架：Mybatis-plus_3.1.2
 
 - 安全框架：Apache Shiro 1.4.0，Jwt_3.7.0
 
@@ -69,7 +119,7 @@ Jeecg-Boot快速开发平台，可以应用在任何J2EE项目的开发中，尤
 
 #### 前端
  
-- [Vue 2.5.22](https://cn.vuejs.org/),[Vuex](https://vuex.vuejs.org/zh/),[Vue Router](https://router.vuejs.org/zh/)
+- [Vue 2.6.10](https://cn.vuejs.org/),[Vuex](https://vuex.vuejs.org/zh/),[Vue Router](https://router.vuejs.org/zh/)
 - [Axios](https://github.com/axios/axios)
 - [ant-design-vue](https://vuecomponent.github.io/ant-design-vue/docs/vue/introduce-cn/)
 - [webpack](https://www.webpackjs.com/),[yarn](https://yarnpkg.com/zh-Hans/)
@@ -78,6 +128,7 @@ Jeecg-Boot快速开发平台，可以应用在任何J2EE项目的开发中，尤
 - [Viser-vue](https://viserjs.github.io/docs.html#/viser/guide/installation)  - antv/g2 封装实现
 - eslint，[@vue/cli 3.2.1](https://cli.vuejs.org/zh/guide)
 - vue-print-nb - 打印
+- [jeecg-boot-angular 版本](https://gitee.com/dangzhenghui/jeecg-boot)
 
 #### 开发环境
 
@@ -95,23 +146,7 @@ Jeecg-Boot快速开发平台，可以应用在任何J2EE项目的开发中，尤
 
 
 
-#### 技术文档
 
-
-- 官方文档 ：  [http://jeecg-boot.mydoc.io](http://jeecg-boot.mydoc.io)
-
-- 零基础入门：  [http://jeecg-boot.mydoc.io/?t=344845](http://jeecg-boot.mydoc.io/?t=344845)
- 
-- 常见问题 ：  [新手入门常见问题汇总](http://www.jeecg.org/forum.php?mod=viewthread&tid=7816&page=1&extra=#pid21237)
-
-- 在线演示 ：  [http://boot.jeecg.org](http://boot.jeecg.org)
-
-- QQ交流群 ：  284271917
-
-- 视频教程（视频可能有点老，以1.1文档为准） ：  https://pan.baidu.com/s/1Il0TS50I70vH1AG1y40wtw 提取码：hok5
-
-- Angular版本 ：[如果你更熟悉Angular，请点击这里找到jeecg-boot的对应版本](https://gitee.com/dangzhenghui/jeecg-boot)
- 
 
 ### 功能模块
 ```
@@ -123,6 +158,12 @@ Jeecg-Boot快速开发平台，可以应用在任何J2EE项目的开发中，尤
 │  ├─表单权限（控制字段禁用、隐藏）
 │  ├─部门管理
 │  └─字典管理
+│  └─树分类字典
+│  └─系统公告
+│  └─我的组织机构
+├─消息中心
+│  ├─消息管理
+│  ├─模板管理
 ├─智能化功能
 │  ├─代码生成器功能（一键生成前后端代码，生成后无需修改直接用，绝对是后端开发福音）
 │  ├─代码生成器模板（提供4套模板，分别支持单表和一对多模型，不同风格选择）
@@ -131,11 +172,6 @@ Jeecg-Boot快速开发平台，可以应用在任何J2EE项目的开发中，尤
 │  ├─高级查询器（弹窗自动组合查询条件）
 │  ├─Excel导入导出工具集成（支持单表，一对多 导入导出）
 │  ├─平台移动自适应支持
-├─Online在线开发(暂未开源)
-│  ├─Online在线表单
-│  ├─Online在线图表
-│  ├─Online图表模板配置
-│  ├─Online在线报表
 ├─系统监控
 │  ├─性能扫描监控
 │  │  ├─监控 Redis
@@ -182,8 +218,7 @@ Jeecg-Boot快速开发平台，可以应用在任何J2EE项目的开发中，尤
 │  └─省略显示组件
 │  └─时间控件
 │  └─高级查询
-│  └─通用选择用户组件
-│  └─通过组织机构选择用户组件
+│  └─用户选择组件
 │  └─报表组件封装
 │  └─字典组件
 │  └─下拉多选组件
@@ -193,6 +228,9 @@ Jeecg-Boot快速开发平台，可以应用在任何J2EE项目的开发中，尤
 │  └─封装曲线、柱状图、饼状图、折线图等等报表的组件（经过封装，使用简单）
 │  └─在线code编辑器
 │  └─上传文件组件
+│  └─验证码组件
+│  └─树列表组件
+│  └─表单禁用组件
 │  └─等等
 │─更多页面模板
 │  ├─各种高级表单
@@ -200,8 +238,14 @@ Jeecg-Boot快速开发平台，可以应用在任何J2EE项目的开发中，尤
 │  └─结果页面
 │  └─异常页面
 │  └─个人页面
-│─流程模块功能 (暂未开源)
-│  ├─在线流程设计
+├─Online在线开发(暂未开源)
+│  ├─Online在线表单
+│  ├─Online在线图表
+│  ├─Online图表模板配置
+│  ├─Online在线报表
+│  ├─高级表单设计器
+│─流程模块功能 (暂不开源)
+│  ├─流程设计器
 │  ├─在线表单设计
 │  └─我的任务
 │  └─历史流程
@@ -218,37 +262,6 @@ Jeecg-Boot快速开发平台，可以应用在任何J2EE项目的开发中，尤
    
 ```
    
-   
-
-系统效果
-----
-
-![输入图片说明](https://static.oschina.net/uploads/img/201902/25154007_icdX.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14155402_AmlV.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160623_8fwk.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160633_u59G.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160643_kCJ7.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160650_fcgw.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160657_cHwb.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160705_NAJn.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160751_bsO9.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160801_2AhS.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160813_KmXS.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160828_pkFr.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160834_Lo23.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160842_QK7B.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160849_GBm5.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160858_6RAM.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160905_RGJ5.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160917_9Ftz.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160926_PUDV.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160935_Nibs.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160947_gfoN.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160957_hN3X.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14161004_bxQ4.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14161013_zW5n.png "在这里输入图片标题")
-
-
 
 
 后台开发环境和依赖
@@ -273,7 +286,6 @@ Jeecg-Boot快速开发平台，可以应用在任何J2EE项目的开发中，尤
 - [vue-cropper](https://github.com/xyxiao001/vue-cropper) - 头像裁剪组件
 - [@antv/g2](https://antv.alipay.com/zh-cn/index.html) - Alipay AntV 数据可视化图表
 - [Viser-vue](https://viserjs.github.io/docs.html#/viser/guide/installation)  - antv/g2 封装实现
-
 
 
 项目下载和运行
@@ -304,6 +316,44 @@ yarn run build
 yarn run lint
 ```
 
+
+
+
+系统效果
+----
+
+##### PC端
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14155402_AmlV.png "在这里输入图片标题")
+![输入图片说明](https://oscimg.oschina.net/oscnet/ba807921197596ba56f495d4b22ee3280ca.jpg "在这里输入图片标题")
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14160657_cHwb.png "在这里输入图片标题")
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14160813_KmXS.png "在这里输入图片标题")
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14160935_Nibs.png "在这里输入图片标题")
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14160957_hN3X.png "在这里输入图片标题")
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14161004_bxQ4.png "在这里输入图片标题")
+
+##### 报表
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14160828_pkFr.png "在这里输入图片标题")
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14160834_Lo23.png "在这里输入图片标题")
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14160842_QK7B.png "在这里输入图片标题")
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14160849_GBm5.png "在这里输入图片标题")
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14160858_6RAM.png "在这里输入图片标题")
+
+##### 流程
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14160623_8fwk.png "在这里输入图片标题")
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14160917_9Ftz.png "在这里输入图片标题")
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14160633_u59G.png "在这里输入图片标题")
+![输入图片说明](https://static.oschina.net/uploads/img/201907/05165142_yyQ7.png "在这里输入图片标题")
+
+
+##### 手机端
+![](https://oscimg.oschina.net/oscnet/da543c5d0d57baab0cecaa4670c8b68c521.jpg)
+![](https://oscimg.oschina.net/oscnet/fda4bd82cab9d682de1c1fbf2060bf14fa6.jpg)
+
+##### PAD端
+![](https://oscimg.oschina.net/oscnet/e90fef970a8c33790ab03ffd6c4c7cec225.jpg)
+![](https://oscimg.oschina.net/oscnet/d78218803a9e856a0aa82b45efc49849a0c.jpg)
+![](https://oscimg.oschina.net/oscnet/0404054d9a12647ef6f82cf9cfb80a5ac02.jpg)
+![](https://oscimg.oschina.net/oscnet/59c23b230f52384e588ee16309b44fa20de.jpg)
 
 
 其他说明
