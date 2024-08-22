@@ -2,7 +2,7 @@ version: '2'
 services:
   jeecg-boot-mysql:
     build:
-      context: ./db
+      context: ./jeecg-boot/db
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_ROOT_HOST: '%'
@@ -19,6 +19,8 @@ services:
       --default-authentication-plugin=caching_sha2_password
     ports:
       - 3306:3306
+    networks:
+      - jeecg-boot
 
   jeecg-boot-redis:
     image: redis:5.0
@@ -27,10 +29,12 @@ services:
     restart: always
     hostname: jeecg-boot-redis
     container_name: jeecg-boot-redis
+    networks:
+      - jeecg-boot
 
   jeecg-boot-system:
     build:
-      context: ./jeecg-module-system/jeecg-system-start
+      context: ./jeecg-boot/jeecg-module-system/jeecg-system-start
     restart: on-failure
     depends_on:
       - jeecg-boot-mysql
@@ -40,3 +44,20 @@ services:
     hostname: jeecg-boot-system
     ports:
       - 8080:8080
+    networks:
+      - jeecg-boot
+  jeecg-vue:
+    build:
+      context: ./jeecgboot-vue3
+    container_name: jeecgboot-vue3-nginx
+    image: jeecgboot-vue3
+    depends_on:
+      - jeecg-boot-system
+    networks:
+      - jeecg-boot
+    ports:
+      - 80:80
+
+networks:
+  jeecg-boot:
+    name: jeecg_boot

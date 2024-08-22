@@ -7,13 +7,12 @@
 JEECG BOOT Low Code Development Platform
 ===============
 
-The Latest Version： 3.4.4（Release date：2022-11-21） 
+Current version: 3.7.0_all (Release date: 2024-06-23)
 
 
 [![AUR](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE)
-[![](https://img.shields.io/badge/Author-GuojuSoftWare-orange.svg)](http://www.jeecg.com)
-[![](https://img.shields.io/badge/Blog-blog-blue.svg)](https://jeecg.blog.csdn.net)
-[![](https://img.shields.io/badge/version-3.4.4-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
+[![](https://img.shields.io/badge/Author-guojusoft-orange.svg)](http://www.jeecg.com)
+[![](https://img.shields.io/badge/version-3.7.0_all-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
 [![GitHub stars](https://img.shields.io/github/stars/zhangdaiscott/jeecg-boot.svg?style=social&label=Stars)](https://github.com/zhangdaiscott/jeecg-boot)
 [![GitHub forks](https://img.shields.io/github/forks/zhangdaiscott/jeecg-boot.svg?style=social&label=Fork)](https://github.com/zhangdaiscott/jeecg-boot)
 
@@ -37,17 +36,8 @@ JEECG Business process: Using workflow to implement and extend the task interfac
 Technical support
 -----------------------------------
 
-Problems or bugs in use can be found in [Making on the Issues](https://github.com/jeecgboot/jeecg-boot/issues/new)
+Problems or bugs in use can be found in [Making on the Issues](https://github.com/jeecgboot/JeecgBoot/issues/new)
 
-Official Support: http://jeecg.com/doc/help
-
-
-Download the source code
------------------------------------
-- The background source ：https://github.com/jeecgboot/jeecg-boot
-- Front-end source (Vue3 version)：https://github.com/jeecgboot/jeecgboot-vue3
-- Front-end source (Vue2 version)：https://github.com/jeecgboot/ant-design-vue-jeecg
-- APP Supporting framework：https://github.com/jeecgboot/jeecg-uniapp
 
 ##### Project description
 
@@ -55,12 +45,13 @@ Download the source code
 |--------------------|------------------------|
 | `jeecg-boot`    | SpringBoot background source code (support microservices)      |
 | `jeecgboot-vue3` | Vue3+TS new front-end source code|
-| `ant-design-vue-jeecg`  |Vue2 version front-end source code     |
-| `jeecg-uniapp` | APP development framework, a code multi terminal adaptation, and support APP, small program, H5 |
-| `jeecg-boot-starter` | [Stater relies on the project to be maintained separately. Click Download](https://gitee.com/jeecg/jeecg-boot-starter) |
-| `More` | [Download more source code](https://github.com/jeecgboot) |
+| `jeecg-uniapp` | [APP development framework, a code multi terminal adaptation, and support APP, small program, H5](https://github.com/jeecgboot/jeecg-uniapp) |
 
 
+
+Download other source code
+-----------------------------------
+- APP SourceCode：https://github.com/jeecgboot/jeecg-uniapp
 
 
 
@@ -69,16 +60,11 @@ For the project
 Jeecg-Boot low code development platform can be applied in the development of any J2EE project, especially for SAAS projects, enterprise information management system (MIS), internal office system (OA), enterprise resource planning system (ERP), customer relationship management system (CRM), etc. Its semi-intelligent manual Merge development method, Can significantly improve the development efficiency of more than 70%, greatly reduce the development cost.
 
 
-
-Docker starts the project
+Starts the project
 -----------------------------------
 
-- [Docker starts the monomer background](http://doc.jeecg.com/2043889)
-- [Docker starts the Vue3 front-end](http://vue3.jeecg.com/3028878)
-
-- [Docker starts the micro-service background](http://doc.jeecg.com/3043472)
-- [Docker starts the Vue2 front-end](http://doc.jeecg.com/3043612)
-
+- [IDEA Quick start](https://help.jeecg.com/java/setup/idea/startup.html)
+- [Docker Quick start](https://help.jeecg.com/java/docker/quick.html)
 
 
 
@@ -86,21 +72,17 @@ Technical documentation
 -----------------------------------
 
 - Website：  [http://www.jeecg.com](http://www.jeecg.com)
-
-- Demo ： [Vue3](http://boot3.jeecg.com) | [Vue2](http://boot.jeecg.com) 
-
-- Doc：  [Vue3](http://vue3.jeecg.com) | [Main](http://doc.jeecg.com) 
-
-- Newbie guide： [Quick start](http://www.jeecg.com/doc/quickstart)  |  [video](https://space.bilibili.com/454617261/channel/series) |   [Q&A ](http://www.jeecg.com/doc/qa)  |   [help](http://jeecg.com/doc/help) |  [1 minute experience](https://my.oschina.net/jeecg/blog/3083313)
-
-- Microservice Development：  [Monomer upgrade to microservice](http://doc.jeecg.com/3043471)
-
-- QQ group ： ⑥730954414、683903138、⑤860162132(full)、④774126647(full)、③816531124(full)、②769925425(full)、①284271917(full)
+- Doc：  [http://help.jeecg.com](http://help.jeecg.com)
+- Newbie guide： [Quick start](http://www.jeecg.com/doc/quickstart) |   [Q&A ](http://www.jeecg.com/doc/qa)  |  [1 minute experience](https://my.oschina.net/jeecg/blog/3083313)
+- QQ group ： ⑨808791225、⑧825232878、⑦791696430、⑥730954414(full)、683903138(full)、⑤860162132(full)、④774126647(full)、③816531124(full)、②769925425(full)、①284271917(full)
+- Demo ： [OnlineDemo](http://boot3.jeecg.com) | [APP](http://jeecg.com/appIndex)
 
 
 
 
-##### Star charts
+
+Star charts
+-----------------------------------
 
 [![Star History Chart](https://api.star-history.com/svg?repos=jeecgboot/jeecg-boot&type=Date)](https://star-history.com/#jeecgboot/jeecg-boot)
 
@@ -161,7 +143,7 @@ Why JeecgBoot?
 * Support SAAS service model and provide SaaS multi-tenant architecture solution.
 * Distributed file service, integration of minio, Ali OSS and other excellent third parties, to provide convenient file upload and management, but also support local storage.
 * Mainstream database compatibility, a set of code is fully compatible with Mysql, Postgresql, Oracle, Sqlserver, MariaDB, dream and other mainstream databases.
-* Integrate workflow activiti and realize only the configuration of flow direction in the page, which can greatly simplify the development of bpm workflow; Using bpm's process designer to draw the flow direction, a workflow is basically complete with a small amount of java code;
+* Integrate workflow flowable and realize only the configuration of flow direction in the page, which can greatly simplify the development of bpm workflow; Using bpm's process designer to draw the flow direction, a workflow is basically complete with a small amount of java code;
 * Low code ability: online process design, using open source Activiti process engine, to achieve online drawing process, custom form, form attachment, business flow
 * Multi-data source: its simple way of use, online configuration of data source configuration, convenient to grab data from other data;
 * Provide single sign-on CAS integration solution, and complete docking code has been provided in the project
@@ -192,7 +174,7 @@ Technical Architecture:
 
 #### Development Environment
 
-- Language: Java 8+ (less than 17)
+- Language: Java 8+ (17)
 
 - IDE(JAVA) : IDEA (lombok plug-in must be installed)
 
@@ -202,20 +184,20 @@ Technical Architecture:
 
 - Cache: Redis
 
-- Database: MySQL5.7 + & Oracle 11 g & Sqlserver2017  [More Databases](https://my.oschina.net/jeecg/blog/4905722)
+- Database: MySQL5.7 + [More Databases](https://my.oschina.net/jeecg/blog/4905722)
 
 
 #### backend
 
-- Basic framework: Spring Boot 2.6.6
+- Basic framework: Spring Boot 2.7.18
 
 - Microservice framework: Spring Cloud Alibaba 2021.0.1.0
 
-- Persistence layer framework: MybatisPlus 3.5.1
+- Persistence layer framework: MybatisPlus 3.5.3.2
 
-- Report tool: JimuReport 1.5.2
+- Report tool: JimuReport 1.7.6
 
-- Security framework: Apache Shiro 1.8.0, Jwt 3.11.0
+- Security framework: Apache Shiro 1.12.0, Jwt 3.11.0
 
 - Microservice technology stack: Spring Cloud Alibaba, Nacos, Gateway, Sentinel, Skywalking
 
@@ -228,8 +210,7 @@ Technical Architecture:
 
 #### The front end
 
-- Vue2 version：`Vue2.6+@vue/cli+AntDesignVue+Viser-vue+Vuex`  [detail](https://github.com/jeecgboot/ant-design-vue-jeecg)
-- Vue3 version：`Vue3.0+TypeScript+Vite+AntDesignVue+pinia+echarts` [detail](https://github.com/jeecgboot/jeecgboot-vue3)
+- TechnologyStack：`Vue3.0+TypeScript+Vite+AntDesignVue+pinia+echarts`
 
 #### Support library
 
@@ -240,44 +221,28 @@ Technical Architecture:
 |  Sqlserver2017   |  √   |
 |   PostgreSQL   |  √   |
 |   MariaDB   |  √   |
-|   达梦、人大金仓   |  √   |
-
+|   达梦   |  √   |
+|   人大金仓   |  √   |
 
 
 ## Microservice solutions
 
-
-1. Service registration and discovery Nacos √
-
-2. Nacos √
-
-3. Route gateway gateway(Three loading modes) √
-
-4. Distributed http feign √
-
-5. fuse degrade current limiting Sentinel √
-
-6. Distributed files Minio and Alioss √
-
-7. Unified permission control
-
-8. Service monitoring SpringBootAdmin√
-
-9. link tracking Skywalking  [reference document](http://doc.jeecg.com/2350293)
-
-10. Messaging middleware RabbitMQ √
-
-11. Distributed task xxl-job √
-
-12. Distributed Transaction Seata
-
-13. Distributed log elk + kafka
-
-14. Support docker-compose, k8s, jenkins
-
-15. CAS SSO √
-
-16. Route traffic limiting √
+- 1. Service registration and discovery Nacos √
+- 2. Nacos √
+- 3. Route gateway gateway(Three loading modes) √
+- 4. Distributed http feign √
+- 5. fuse degrade current limiting Sentinel √
+- 6. Distributed files Minio and Alioss √
+- 7. Unified permission control
+- 8. Service monitoring SpringBootAdmin√
+- 9. link tracking Skywalking  [reference document](https://help.jeecg.com/java/springcloud/super/skywarking.html)
+- 10. Messaging middleware RabbitMQ √
+- 11. Distributed task xxl-job √
+- 12. Distributed Transaction Seata
+- 13. Distributed log Loki+grafana
+- 14. Support docker-compose, k8s, jenkins
+- 15. CAS SSO √
+- 16. Route traffic limiting √
 
    
 #### Microservice architecture diagram
@@ -286,200 +251,133 @@ Technical Architecture:
 ### Jeecg Boot product functionality blueprint
 ![功能蓝图](https://jeecgos.oss-cn-beijing.aliyuncs.com/upload/test/Jeecg-Boot-lantu202005_1590912449914.jpg "在这里输入图片标题")
 
+### quick start
+- Microservice Development：  [Monomer upgrade to microservice](https://help.jeecg.com/java/springcloud/switchcloud/monomer.html)
+- [Docker starts the micro-service background](https://help.jeecg.com/java/docker/springcloud.html)
 
 
+### Effect of system
 
-### Function module
-```
-├─系统管理
-│  ├─用户管理
-│  ├─角色管理
-│  ├─菜单管理
-│  ├─权限设置（支持按钮权限、数据权限）
-│  ├─表单权限（控制字段禁用、隐藏）
-│  ├─部门管理
-│  ├─我的部门（二级管理员）
-│  └─字典管理
-│  └─分类字典
-│  └─系统公告
-│  └─职务管理
-│  └─通讯录
-│  └─多租户管理
-├─消息中心
-│  ├─消息管理
-│  ├─模板管理
-├─代码生成器(低代码)
-│  ├─代码生成器功能（一键生成前后端代码，生成后无需修改直接用，绝对是后端开发福音）
-│  ├─代码生成器模板（提供4套模板，分别支持单表和一对多模型，不同风格选择）
-│  ├─代码生成器模板（生成代码，自带excel导入导出）
-│  ├─查询过滤器（查询逻辑无需编码，系统根据页面配置自动生成）
-│  ├─高级查询器（弹窗自动组合查询条件）
-│  ├─Excel导入导出工具集成（支持单表，一对多 导入导出）
-│  ├─平台移动自适应支持
-├─系统监控
-│  ├─Gateway路由网关
-│  ├─性能扫描监控
-│  │  ├─监控 Redis
-│  │  ├─Tomcat
-│  │  ├─jvm
-│  │  ├─服务器信息
-│  │  ├─请求追踪
-│  │  ├─磁盘监控
-│  ├─定时任务
-│  ├─系统日志
-│  ├─消息中心（支持短信、邮件、微信推送等等）
-│  ├─数据日志（记录数据快照，可对比快照，查看数据变更情况）
-│  ├─系统通知
-│  ├─SQL监控
-│  ├─swagger-ui(在线接口文档)
-│─报表示例
-│  ├─曲线图
-│  └─饼状图
-│  └─柱状图
-│  └─折线图
-│  └─面积图
-│  └─雷达图
-│  └─仪表图
-│  └─进度条
-│  └─排名列表
-│  └─等等
-│─大屏模板
-│  ├─作战指挥中心大屏
-│  └─物流服务中心大屏
-│─常用示例
-│  ├─自定义组件
-│  ├─对象存储(对接阿里云)
-│  ├─JVXETable示例（各种复杂ERP布局示例）
-│  ├─单表模型例子
-│  └─一对多模型例子
-│  └─打印例子
-│  └─一对多TAB例子
-│  └─内嵌table例子
-│  └─常用选择组件
-│  └─异步树table
-│  └─接口模拟测试
-│  └─表格合计示例
-│  └─异步树列表示例
-│  └─一对多JEditable
-│  └─JEditable组件示例
-│  └─图片拖拽排序
-│  └─图片翻页
-│  └─图片预览
-│  └─PDF预览
-│  └─分屏功能
-│─封装通用组件	
-│  ├─行编辑表格JEditableTable
-│  └─省略显示组件
-│  └─时间控件
-│  └─高级查询
-│  └─用户选择组件
-│  └─报表组件封装
-│  └─字典组件
-│  └─下拉多选组件
-│  └─选人组件
-│  └─选部门组件
-│  └─通过部门选人组件
-│  └─封装曲线、柱状图、饼状图、折线图等等报表的组件（经过封装，使用简单）
-│  └─在线code编辑器
-│  └─上传文件组件
-│  └─验证码组件
-│  └─树列表组件
-│  └─表单禁用组件
-│  └─等等
-│─更多页面模板
-│  ├─各种高级表单
-│  ├─各种列表效果
-│  └─结果页面
-│  └─异常页面
-│  └─个人页面
-├─高级功能
-│  ├─系统编码规则
-│  ├─提供单点登录CAS集成方案
-│  ├─提供APP发布方案
-│  ├─集成Websocket消息通知机制
-├─Online在线开发(低代码)
-│  ├─Online在线表单 - 功能已开放
-│  ├─Online代码生成器 - 功能已开放
-│  ├─Online在线报表 - 功能已开放
-│  ├─Online在线图表(未开源)
-│  ├─Online图表模板配置(未开源)
-│  ├─Online布局设计(未开源)
-│  ├─多数据源管理 - 功能已开放
-├─积木报表设计器(低代码)
-│  ├─打印设计器
-│  ├─数据报表设计
-│  ├─图形报表设计（支持echart）
-│  ├─大屏设计器(未开源)
-│─流程模块功能 (未开源)
-│  ├─流程设计器
-│  ├─表单设计器
-   ├─大屏设计器
-   ├─门户设计/仪表盘设计器
-│  └─我的任务
-│  └─历史流程
-│  └─历史流程
-│  └─流程实例管理
-│  └─流程监听管理
-│  └─流程表达式
-│  └─我发起的流程
-│  └─我的抄送
-│  └─流程委派、抄送、跳转
-│  └─。。。
-│─OA办公组件 (未开源)
-│  ├─更多功能
-│  └─。。。
-└─其他模块
-   └─更多功能开发中。。
-   
-```
+##### ChatGPT AI Dialog
+> Go to the JeecgBoot background home page and click "AI Assistant" in the middle of the right side of the home page. The AI Assistant dialog screen is displayed.
+![](https://oscimg.oschina.net/oscnet/up-7c6405641a40f56638999d52da0cb5b4343.png)
 
-
-
-
-
-Effect of system
-----
-##### Screen template
-![输入图片说明](https://static.oschina.net/uploads/img/201912/25133248_Ag1C.jpg "在这里输入图片标题")
-
-![输入图片说明](https://static.oschina.net/uploads/img/201912/25133301_k9Kc.jpg "在这里输入图片标题")
 
 ##### PC
+![](https://oscimg.oschina.net/oscnet/up-000530d95df337b43089ac77e562494f454.png)
+
 ![输入图片说明](https://static.oschina.net/uploads/img/201904/14155402_AmlV.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160657_cHwb.png "在这里输入图片标题")
+
+![](https://oscimg.oschina.net/oscnet/up-9d6f36f251e71a0b515a01323474b03004c.png)
+
 ![输入图片说明](https://static.oschina.net/uploads/img/201904/14160813_KmXS.png "在这里输入图片标题")
+
 ![输入图片说明](https://static.oschina.net/uploads/img/201904/14160935_Nibs.png "在这里输入图片标题")
+
 ![输入图片说明](https://static.oschina.net/uploads/img/201904/14161004_bxQ4.png "在这里输入图片标题")
 
+#####  interactive
+![](https://oscimg.oschina.net/oscnet/up-78b151fc888d4319377bf1cc311fe826871.png)
 
-##### Online interface documentation
-![输入图片说明](https://static.oschina.net/uploads/img/201908/27095258_M2Xq.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160957_hN3X.png "在这里输入图片标题")
+![](https://oscimg.oschina.net/oscnet/up-16c07e000278329b69b228ae3189814b8e9.png)
 
 
-##### Report
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160828_pkFr.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160834_Lo23.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160842_QK7B.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160849_GBm5.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160858_6RAM.png "在这里输入图片标题")
+##### process Designer
+![](https://oscimg.oschina.net/oscnet/up-981ce174e4fbb48c8a2ce4ccfd7372e2994.png)
 
-##### Process
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160623_8fwk.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160917_9Ftz.png "在这里输入图片标题")
-![输入图片说明](https://static.oschina.net/uploads/img/201904/14160633_u59G.png "在这里输入图片标题")
 ![输入图片说明](https://static.oschina.net/uploads/img/201907/05165142_yyQ7.png "在这里输入图片标题")
 
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14160917_9Ftz.png "在这里输入图片标题")
 
-##### App
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14160633_u59G.png "在这里输入图片标题")
+
+##### min process
+
+![](https://oscimg.oschina.net/oscnet/up-1dc0d052149ec675f3e4fad632b82b48add.png)
+
+![](https://oscimg.oschina.net/oscnet/up-de31bc2f9d9b8332c554b0954cc73d79593.png)
+
+![](https://oscimg.oschina.net/oscnet/up-7f83b25159663686d67ed080eb16068c3b4.png)
+
+#####  dashboard Designer
+
+
+![](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/darg20240726105556.png)
+
+![](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/drag20240724135626.png)
+
+![](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/drag20240724135619.png)
+
+![](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/drag20240724135630.png)
+
+![](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/drag20240726105547.png)
+
+![](https://oscimg.oschina.net/oscnet/up-fad98d42b2cf92f92a903c9cff7579f18ec.png)
+
+
+
+##### report Designer
+![](https://oscimg.oschina.net/oscnet/up-64648de000851f15f6c7b9573d107ebb5f8.png)
+
+![](https://oscimg.oschina.net/oscnet/up-fa52b44445db281c51d3f267dce7450d21b.gif)
+
+![](https://oscimg.oschina.net/oscnet/up-68a19149d640f1646c8ed89ed4375e3326c.png)
+
+![](https://oscimg.oschina.net/oscnet/up-f7e9cb2e3740f2d19ff63b40ec2dd554f96.png)
+
+##### form Designer
+![](https://oscimg.oschina.net/oscnet/up-5f8cb657615714b02190b355e59f60c5937.png)
+
+![](https://oscimg.oschina.net/oscnet/up-d9659b2f324e33218476ec98c9b400e6508.png)
+
+![](https://oscimg.oschina.net/oscnet/up-4868615395272d3206dbb960ade02dbc291.png)
+
+##### bigscreen Designer
+![](https://oscimg.oschina.net/oscnet/up-402a6034124474bfef8dfc5b4b2bac1ce5c.png)
+
+![](https://oscimg.oschina.net/oscnet/up-6f7ba2e2ebbeea0d203db8d69fd87644c9f.png)
+
+![](https://oscimg.oschina.net/oscnet/up-ee8d34f318da466b8a6070a6e3111d12ce7.png)
+
+![](https://oscimg.oschina.net/oscnet/up-6b81781b43086819049c4421206810667c5.png)
+
+##### uniapp
+![](https://oscimg.oschina.net/oscnet/up-aac943fbd26561879c57a41f7a406edf274.png)
+
+![](https://oscimg.oschina.net/oscnet/up-9a44ba2e82b09c750629d12fafd7f60f553.png)
+
+##### low app
+![](https://oscimg.oschina.net/oscnet/up-4be29ae761b2615c8c54b3f668cd8432d9b.png)
+
+![](https://oscimg.oschina.net/oscnet/up-787e76bc24b38ecc7ed19f338808d128255.png)
+
+![](https://oscimg.oschina.net/oscnet/up-99d24a236c483362868523ad0d90f611487.png)
+
+![](https://oscimg.oschina.net/oscnet/up-339a0f29d10449abc7724e3bcda802761c1.png)
+
+![](https://oscimg.oschina.net/oscnet/up-b356670cdc14c609958c7619a537397c4b9.png)
+
+##### app
 ![](https://oscimg.oschina.net/oscnet/da543c5d0d57baab0cecaa4670c8b68c521.jpg)
 ![](https://oscimg.oschina.net/oscnet/fda4bd82cab9d682de1c1fbf2060bf14fa6.jpg)
 
 ##### PAD
 ![](https://oscimg.oschina.net/oscnet/e90fef970a8c33790ab03ffd6c4c7cec225.jpg)
 ![](https://oscimg.oschina.net/oscnet/d78218803a9e856a0aa82b45efc49849a0c.jpg)
-![](https://oscimg.oschina.net/oscnet/0404054d9a12647ef6f82cf9cfb80a5ac02.jpg)
 ![](https://oscimg.oschina.net/oscnet/59c23b230f52384e588ee16309b44fa20de.jpg)
+
+
+##### chart
+![](https://oscimg.oschina.net/oscnet/up-218bc6a1669496b241ebb23506440c0083e.png)
+
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14160834_Lo23.png "在这里输入图片标题")
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14160842_QK7B.png "在这里输入图片标题")
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14160849_GBm5.png "在这里输入图片标题")
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14160858_6RAM.png "在这里输入图片标题")
+
+##### swagger
+![输入图片说明](https://static.oschina.net/uploads/img/201908/27095258_M2Xq.png "在这里输入图片标题")
+![输入图片说明](https://static.oschina.net/uploads/img/201904/14160957_hN3X.png "在这里输入图片标题")
 
 
 ## donation
