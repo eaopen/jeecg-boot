@@ -259,6 +259,20 @@ export const schemas: FormSchema[] = [
     colProps: { span: 12 },
   },
   {
+    field: 'user4',
+    component: 'JSelectUserByDepartment',
+    label: '部门选择用户',
+    helpMessage: ['component模式'],
+    defaultValue: '',
+    componentProps: {
+      labelKey: 'realname',
+      rowKey: 'username',
+    },
+    colProps: {
+      span: 12,
+    },
+  },
+  {
     field: 'role2',
     component: 'JSelectRole',
     label: '角色选择组件',
@@ -788,34 +802,35 @@ export const schemas: FormSchema[] = [
     componentProps: {
       selectPlaceholder: '可选择系统变量',
       inputPlaceholder: '请输入',
+      selectWidth:'200px',
       options: [
         {
           label: '登录用户账号',
-          value: '${sys_user_code}',
+          value: '#{sys_user_code}',
         },
         {
           label: '登录用户名称',
-          value: '${sys_user_name}',
+          value: '#{sys_user_name}',
         },
         {
           label: '当前日期',
-          value: '${sys_date}',
+          value: '#{sys_date}',
         },
         {
           label: '当前时间',
-          value: '${sys_date}',
+          value: '#{sys_time}',
         },
         {
           label: '登录用户部门',
-          value: '${sys_org_code}',
+          value: '#{sys_org_code}',
         },
         {
           label: '用户拥有部门',
-          value: '${sys_multi_org_code}',
+          value: '#{sys_multi_org_code}',
         },
         {
           label: '登录用户租户',
-          value: '${tenant_id}',
+          value: '#{tenant_id}',
         },
       ],
     },

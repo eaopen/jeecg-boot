@@ -12,6 +12,7 @@ import {
 } from '/@/enums/appEnum';
 import { SIDE_BAR_BG_COLOR_LIST, HEADER_PRESET_BG_COLOR_LIST } from './designSetting';
 import { primaryColor } from '../../build/config/themeConfig';
+import { darkMode } from '/@/settings/designSetting';
 
 // ! 改动后需要清空浏览器缓存
 const setting: ProjectConfig = {
@@ -43,6 +44,10 @@ const setting: ProjectConfig = {
 
   // 项目主题色
   themeColor: primaryColor,
+  // update-begin--author:liaozhiyang---date:20250414--for：【QQYUN-11956】修复projectSetting中配置主题模式不生效
+  // 项目主题模式
+  themeMode: darkMode,
+  // update-end--author:liaozhiyang---date:20250414--for：【QQYUN-11956】修复projectSetting中配置主题模式不生效
 
   // 网站灰色模式，用于可能悼念的日期开启
   grayMode: false,
@@ -109,6 +114,10 @@ const setting: ProjectConfig = {
     type: MenuTypeEnum.SIDEBAR,
     // 菜单主题
     theme: ThemeEnum.DARK,
+    // update-begin--author:liaozhiyang---date:20241203---for：【issues/7522】解决menuSetting ts警告
+    // 左侧导航栏文字颜色调整区分彩色和暗黑 (不对应配置)
+    isThemeBright: false,
+    // update-end--author:liaozhiyang---date:20241203---for：【issues/7522】解决menuSetting ts警告
     // 分割菜单
     split: false,
     // 顶部菜单布局
@@ -146,7 +155,7 @@ const setting: ProjectConfig = {
   // 动画配置
   transitionSetting: {
     //  是否开启切换动画
-    // The disabled state will also disable pageLoadinng
+    // The disabled state will also disable pageLoading
     enable: true,
 
     // 动画名 Route basic switching animation

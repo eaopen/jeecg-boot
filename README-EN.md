@@ -4,15 +4,15 @@
 
 
 
-JEECG BOOT Low Code Development Platform
+JEECG BOOT AI Low Code Platform
 ===============
 
-Current version: 3.7.0_all (Release date: 2024-06-23)
+Current version: 3.8.0 (Release date: 2025-04-18)
 
 
 [![AUR](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE)
 [![](https://img.shields.io/badge/Author-guojusoft-orange.svg)](http://www.jeecg.com)
-[![](https://img.shields.io/badge/version-3.7.0_all-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
+[![](https://img.shields.io/badge/version-3.8.0-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
 [![GitHub stars](https://img.shields.io/github/stars/zhangdaiscott/jeecg-boot.svg?style=social&label=Stars)](https://github.com/zhangdaiscott/jeecg-boot)
 [![GitHub forks](https://img.shields.io/github/forks/zhangdaiscott/jeecg-boot.svg?style=social&label=Fork)](https://github.com/zhangdaiscott/jeecg-boot)
 
@@ -21,9 +21,9 @@ Current version: 3.7.0_all (Release date: 2024-06-23)
 Project introduction
 -----------------------------------
 
-<h3 align="center">Java Low Code Platform for Enterprise web applications</h3>
+<h3 align="center">Java AI Low Code Platform</h3>
 
-JeecgBoot is a `low code development platform` based on code `generators`! Front and back end separation architecture SpringBoot2.x, SpringCloud, Ant Design&Vue, Mybatis plus, Shiro, JWT, support for microservices. The powerful code generator makes the front and back end of the code generation, low code development! JeecgBoot leads a new low-code development paradigm (OnlineCoding-> Code Generator -> Manual MERGE) that helps resolve 70% of the duplication in Java projects and makes development more business-focused. Not only can quickly improve efficiency, save research and development costs, but also do not lose flexibility!
+JeecgBoot is a `AI low code platform` based on code `generators`! Front and back end separation architecture SpringBoot2.x, SpringCloud, Ant Design&Vue, Mybatis plus, Shiro, JWT, support for microservices. The powerful code generator makes the front and back end of the code generation, low code development! JeecgBoot leads a new low-code development paradigm (OnlineCoding-> Code Generator -> Manual MERGE) that helps resolve 70% of the duplication in Java projects and makes development more business-focused. Not only can quickly improve efficiency, save research and development costs, but also do not lose flexibility!
 
 JeecgBoot provides a series of low code modules to make Online development truly zero code: Online form development, online reports, report configuration capabilities, online chart design, large screen design, mobile configuration capabilities, form designer, online design flow, process automation configuration, plug-in capabilities (pluggable) and more!
 
@@ -32,11 +32,12 @@ The purpose of JEECG is: simple functions are implemented by OnlineCoding config
 
 JEECG Business process: Using workflow to implement and extend the task interface for developing and writing business logic, forms provides a variety of solutions: form designer, online configuration form, and coding form. At the same time, the separation design of process and form (loose coupling) is realized, and the flexible configuration of task nodes is supported, which not only ensures the confidentiality of the company's process, but also reduces the workload of developers.
 
+AI Empowering Low-Code: Currently, JeecgBoot supports AI large models such as ChatGPT and DeepSeek. The latest version defaults to using DeepSeek, which offers faster speed and higher quality. It now provides features such as AI chat assistant, AI table creation, and AI report generation.
 
 Technical support
 -----------------------------------
 
-Problems or bugs in use can be found in [Making on the Issues](https://github.com/jeecgboot/JeecgBoot/issues/new)
+Problems or bugs in use can be found in [Making on the Issues](https://github.com/jeecgboot/JeecgBoot/issues/new?template=bug_report.md)
 
 
 ##### Project description
@@ -48,6 +49,11 @@ Problems or bugs in use can be found in [Making on the Issues](https://github.co
 | `jeecg-uniapp` | [APP development framework, a code multi terminal adaptation, and support APP, small program, H5](https://github.com/jeecgboot/jeecg-uniapp) |
 
 
+### Video Introduction
+
+[![](https://upload.jeecg.com/jeecg/qiaoqiaoyunsite/jeecgvideo02.png)](https://www.bilibili.com/video/BV1Nk4y1o7Qc)
+
+
 
 Download other source code
 -----------------------------------
@@ -57,14 +63,14 @@ Download other source code
 
 For the project
 -----------------------------------
-Jeecg-Boot low code development platform can be applied in the development of any J2EE project, especially for SAAS projects, enterprise information management system (MIS), internal office system (OA), enterprise resource planning system (ERP), customer relationship management system (CRM), etc. Its semi-intelligent manual Merge development method, Can significantly improve the development efficiency of more than 70%, greatly reduce the development cost.
+Jeecg-Boot AI low code platform can be applied in the development of any J2EE project, especially for SAAS projects, enterprise information management system (MIS), internal office system (OA), enterprise resource planning system (ERP), customer relationship management system (CRM), etc. Its semi-intelligent manual Merge development method, Can significantly improve the development efficiency of more than 70%, greatly reduce the development cost.
 
 
 Starts the project
 -----------------------------------
 
-- [IDEA Quick start](https://help.jeecg.com/java/setup/idea/startup.html)
-- [Docker Quick start](https://help.jeecg.com/java/docker/quick.html)
+- [IDEA Quick start](https://help.jeecg.com/java/setup/idea/startup)
+- [Docker Quick start](https://help.jeecg.com/java/docker/quick)
 
 
 
@@ -72,10 +78,11 @@ Technical documentation
 -----------------------------------
 
 - Website：  [http://www.jeecg.com](http://www.jeecg.com)
-- Doc：  [http://help.jeecg.com](http://help.jeecg.com)
-- Newbie guide： [Quick start](http://www.jeecg.com/doc/quickstart) |   [Q&A ](http://www.jeecg.com/doc/qa)  |  [1 minute experience](https://my.oschina.net/jeecg/blog/3083313)
-- QQ group ： ⑨808791225、⑧825232878、⑦791696430、⑥730954414(full)、683903138(full)、⑤860162132(full)、④774126647(full)、③816531124(full)、②769925425(full)、①284271917(full)
 - Demo ： [OnlineDemo](http://boot3.jeecg.com) | [APP](http://jeecg.com/appIndex)
+- Doc：  [DocumentCenter](http://help.jeecg.com) | [AI Config](https://help.jeecg.com/java/ai/aichat)
+- Newbie guide： [Quick start](http://www.jeecg.com/doc/quickstart) |   [Q&A ](http://www.jeecg.com/doc/qa)  |  [1 minute experience](https://my.oschina.net/jeecg/blog/3083313)
+- QQ group ： ⑩716488839、⑨808791225
+
 
 
 
@@ -174,7 +181,7 @@ Technical Architecture:
 
 #### Development Environment
 
-- Language: Java 8+ (17)
+- Language: Java Default Jdk17(support jdk8、jdk21)
 
 - IDE(JAVA) : IDEA (lombok plug-in must be installed)
 
@@ -191,17 +198,17 @@ Technical Architecture:
 
 - Basic framework: Spring Boot 2.7.18
 
-- Microservice framework: Spring Cloud Alibaba 2021.0.1.0
+- Microservice framework: Spring Cloud Alibaba 2021.0.6.2
 
 - Persistence layer framework: MybatisPlus 3.5.3.2
 
-- Report tool: JimuReport 1.7.6
+- Report tool: JimuReport 1.9.5
 
-- Security framework: Apache Shiro 1.12.0, Jwt 3.11.0
+- Security framework: Apache Shiro 1.13.0, Jwt 4.5.0
 
 - Microservice technology stack: Spring Cloud Alibaba, Nacos, Gateway, Sentinel, Skywalking
 
-- Database connection pool: Alibaba Druid 1.1.22
+- Database connection pool: Alibaba Druid 1.1.24
 
 - Log printing: logback
 
@@ -211,6 +218,14 @@ Technical Architecture:
 #### The front end
 
 - TechnologyStack：`Vue3.0+TypeScript+Vite+AntDesignVue+pinia+echarts`
+
+#### Front-end environment requirements
+
+*    `Node.js 、npm 、pnpm`
+*   pnpm `v9+` is now required.
+*   Node.js Version suggestion: `v20.15.0`
+ ` ( Since Vite6 Node.js 18/20 + is now required )`
+ 
 
 #### Support library
 
@@ -223,6 +238,24 @@ Technical Architecture:
 |   MariaDB   |  √   |
 |   达梦   |  √   |
 |   人大金仓   |  √   |
+|   TiDB   |  √   |
+
+
+#### AI Support
+
+| AI Model | Supported |
+| --- | --- |
+| DeepSeek | √ |
+| ChatGPT | √ |
+| Qwq | √ |
+| 智库 | √ |
+| Ollama本地搭建大模型 | √ |
+| 等等。。 | √ |
+
+
+AI Config： https://help.jeecg.com/java/ai/aichat
+
+AI APP: https://help.jeecg.com/aigc
 
 
 ## Microservice solutions
@@ -235,7 +268,7 @@ Technical Architecture:
 - 6. Distributed files Minio and Alioss √
 - 7. Unified permission control
 - 8. Service monitoring SpringBootAdmin√
-- 9. link tracking Skywalking  [reference document](https://help.jeecg.com/java/springcloud/super/skywarking.html)
+- 9. link tracking Skywalking  [reference document](https://help.jeecg.com/java/springcloud/super/skywarking)
 - 10. Messaging middleware RabbitMQ √
 - 11. Distributed task xxl-job √
 - 12. Distributed Transaction Seata
@@ -252,8 +285,8 @@ Technical Architecture:
 ![功能蓝图](https://jeecgos.oss-cn-beijing.aliyuncs.com/upload/test/Jeecg-Boot-lantu202005_1590912449914.jpg "在这里输入图片标题")
 
 ### quick start
-- Microservice Development：  [Monomer upgrade to microservice](https://help.jeecg.com/java/springcloud/switchcloud/monomer.html)
-- [Docker starts the micro-service background](https://help.jeecg.com/java/docker/springcloud.html)
+- Microservice Development：  [Monomer upgrade to microservice](https://help.jeecg.com/java/springcloud/switchcloud/monomer)
+- [Docker starts the micro-service background](https://help.jeecg.com/java/docker/springcloud)
 
 
 ### Effect of system

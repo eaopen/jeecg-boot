@@ -78,4 +78,13 @@ public interface ISysTenantPackService extends IService<SysTenantPack> {
      * @param id
      */
     void addTenantDefaultPack(Integer id);
+
+    /**
+     * 同步默认的套餐
+     * for [QQYUN-11032]【jeecg】租户套餐管理增加初始化套餐包按钮
+     * @param tenantId
+     * @author chenrui
+     * @date 2025/2/5 19:08
+     */
+    void syncDefaultPack(Integer tenantId);
 }

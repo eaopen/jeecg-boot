@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.util.Map;
 
@@ -95,8 +96,8 @@ public class FlywayConfig {
      */
     @Value("${spring.flyway.clean-disabled:true}")
     private Boolean cleanDisabled;
-    
-    @Bean
+
+    @PostConstruct
     public void migrate() {
         if(!enabled){
             return;

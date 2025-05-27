@@ -205,7 +205,8 @@ public class SysUserController {
                 // 修改用户走一个service 保证事务
                 //获取租户ids
                 String relTenantIds = jsonObject.getString("relTenantIds");
-				sysUserService.editUser(user, roles, departs, relTenantIds);
+                String updateFromPage = jsonObject.getString("updateFromPage");
+				sysUserService.editUser(user, roles, departs, relTenantIds, updateFromPage);
 				result.success("修改成功!");
 			}
 		} catch (Exception e) {
@@ -222,7 +223,12 @@ public class SysUserController {
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
 	public Result<?> delete(@RequestParam(name="id",required=true) String id) {
 		baseCommonService.addLog("删除用户，id： " +id ,CommonConstant.LOG_TYPE_2, 3);
+        List<String> userNameList = sysUserService.userIdToUsername(Arrays.asList(id));
 		this.sysUserService.deleteUser(id);
+
+        if (!userNameList.isEmpty()) {
+            String joinedString = String.join(",", userNameList);
+        }
 		return Result.ok("删除用户成功");
 	}
 
@@ -233,7 +239,13 @@ public class SysUserController {
 	@RequestMapping(value = "/deleteBatch", method = RequestMethod.DELETE)
 	public Result<?> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
 		baseCommonService.addLog("批量删除用户， ids： " +ids ,CommonConstant.LOG_TYPE_2, 3);
+        List<String> userNameList = sysUserService.userIdToUsername(Arrays.asList(ids.split(",")));
 		this.sysUserService.deleteBatchUsers(ids);
+		
+        // 用户变更，触发同步工作流
+        if (!userNameList.isEmpty()) {
+            String joinedString = String.join(",", userNameList);
+        }
 		return Result.ok("批量删除用户成功");
 	}
 
@@ -736,7 +748,10 @@ public class SysUserController {
         if(oConvertUtils.isEmpty(depId)){
             LoginUser user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
             int userIdentity = user.getUserIdentity() != null?user.getUserIdentity():CommonConstant.USER_IDENTITY_1;
-            if(oConvertUtils.isNotEmpty(userIdentity) && userIdentity == CommonConstant.USER_IDENTITY_2 ){
+            //update-begin---author:chenrui ---date:20250107  for：[QQYUN-10775]验证码可以复用 #7674------------
+            if(oConvertUtils.isNotEmpty(userIdentity) && userIdentity == CommonConstant.USER_IDENTITY_2
+                    && oConvertUtils.isNotEmpty(user.getDepartIds())) {
+            //update-end---author:chenrui ---date:20250107  for：[QQYUN-10775]验证码可以复用 #7674------------
                 subDepids = sysDepartService.getMySubDepIdsByDepId(user.getDepartIds());
             }
         }else{
@@ -906,6 +921,9 @@ public class SysUserController {
             boolean b = sysUserDepartService.remove(queryWrapper);
             if(b){
                 departRoleUserService.removeDeptRoleUser(Arrays.asList(userIds.split(",")),depId);
+            }else{
+                result.error500("删除失败，目标用户不在当前部门！");
+                return result;
             }
             result.success("删除成功!");
         }catch(Exception e) {
@@ -1286,7 +1304,7 @@ public class SysUserController {
      * @param jsonObject
      * @return
      */
-    @RequiresRoles({"admin"})
+    @RequiresPermissions("system:user:app:edit")
     @RequestMapping(value = "/appEdit", method = {RequestMethod.PUT,RequestMethod.POST})
     public Result<SysUser> appEdit(HttpServletRequest request,@RequestBody JSONObject jsonObject) {
         Result<SysUser> result = new Result<SysUser>();
@@ -1828,5 +1846,58 @@ public class SysUserController {
     @RequestMapping(value = "/importAppUser", method = RequestMethod.POST)
     public Result<?> importAppUser(HttpServletRequest request, HttpServletResponse response)throws IOException {
         return sysUserService.importAppUser(request);
+    }
+
+    /**
+     * 更改手机号（敲敲云个人设置专用）
+     *
+     * @param json
+     * @param request
+     */
+    @PutMapping("/changePhone")
+    public Result<String> changePhone(@RequestBody JSONObject json, HttpServletRequest request){
+        //获取登录用户名
+        String username = JwtUtil.getUserNameByToken(request);
+        sysUserService.changePhone(json,username);
+        return Result.ok("修改手机号成功！");
+    }
+    
+    /**
+     * 发送短信验证码接口(修改手机号)
+     *
+     * @param jsonObject
+     * @return
+     */
+    @PostMapping(value = "/sendChangePhoneSms")
+    public Result<String> sendChangePhoneSms(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
+        //获取登录用户名
+        String username = JwtUtil.getUserNameByToken(request);
+        String ipAddress = IpUtils.getIpAddr(request);
+        sysUserService.sendChangePhoneSms(jsonObject, username, ipAddress);
+        return Result.ok("发送验证码成功！");
+    }
+
+    /**
+     * 发送注销用户手机号验证密码[敲敲云专用]
+     *
+     * @param jsonObject
+     * @return
+     */
+    @PostMapping(value = "/sendLogOffPhoneSms")
+    public Result<String> sendLogOffPhoneSms(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
+        Result<String> result = new Result<>();
+        //获取登录用户名
+        String username = JwtUtil.getUserNameByToken(request);
+        String name = jsonObject.getString("username");
+        if (oConvertUtils.isEmpty(name) || !name.equals(username)) {
+            result.setSuccess(false);
+            result.setMessage("发送验证码失败，用户不匹配！");
+            return result;
+        }
+        String ipAddress = IpUtils.getIpAddr(request);
+        sysUserService.sendLogOffPhoneSms(jsonObject, username, ipAddress);
+        result.setSuccess(true);
+        result.setMessage("发送验证码成功！");
+        return result;
     }
 }

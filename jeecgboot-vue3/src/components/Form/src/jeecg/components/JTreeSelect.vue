@@ -32,8 +32,8 @@
   import { useAttrs } from '/@/hooks/core/useAttrs';
   import { TreeSelect } from 'ant-design-vue';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { isObject } from '/@/utils/is';
-
+  import { isObject, isArray } from '/@/utils/is';
+  import { useI18n } from '/@/hooks/web/useI18n';
   enum Api {
     url = '/sys/dict/loadTreeData',
     view = '/sys/dict/loadDictItem/',
@@ -65,6 +65,7 @@
     hiddenNodeKey: propTypes.string.def(''),
   });
   const attrs = useAttrs();
+  const { t } = useI18n();
   const emit = defineEmits(['change', 'update:value']);
   const slots = defineSlots();
   const { createMessage } = useMessage();
@@ -142,6 +143,23 @@
       if(props.url){
         getItemFromTreeData();
       }else{
+        // update-begin--author:liaozhiyang---date:20250423---for：【issues/8093】选择节点后会先变成编码再显示label文字
+        if (props.value) {
+          if (isArray(treeValue.value)) {
+            let isNotRequestTransform = false;
+            const value = isArray(props.value) ? props.value : props.value.split(',');
+            isNotRequestTransform = value.every((value) => !!treeValue.value.find((item) => item.value === value));
+            if (isNotRequestTransform) {
+              return;
+            }
+          } else if (isObject(treeValue.value) && unref(treeValue).label != null) {
+            if (props.value == unref(treeValue).value) {
+              // 不需要再去请求翻译
+              return;
+            }
+          }
+        }
+        // update-end--author:liaozhiyang---date:20250423---for：【issues/8093】选择节点后会先变成编码再显示label文字
         let params = { key: props.value };
         let result = await defHttp.get({ url: `${Api.view}${props.dict}`, params }, { isTransformResponse: false });
         if (result.success) {
@@ -151,10 +169,10 @@
             treeValue.value = result.result.map((item, index) => ({
               key: values[index],
               value: values[index],
-              label: item,
+              label: translateTitle(item),
             }));
           }else{
-            treeValue.value = { key: props.value, value: props.value, label: result.result[0] };
+            treeValue.value = { key: props.value, value: props.value, label: translateTitle(result.result[0]) };
           }
           //update-end-author:liaozhiyang date:2023-7-17 for:【issues/5141】使用JtreeSelect 组件 控制台报错
           onLoadTriggleChange(result.result[0]);
@@ -198,6 +216,7 @@
     let res = await defHttp.get({ url: Api.url, params }, { isTransformResponse: false });
     if (res.success && res.result) {
       for (let i of res.result) {
+        i.title = translateTitle(i.title);
         i.value = i.key;
         i.isLeaf = !!i.leaf;
       }
@@ -211,13 +230,23 @@
   }
 
   /**
+   * 翻译
+   * @param text
+   */
+  function translateTitle(text) {
+    if (text.includes("t('") && t) {
+      return new Function('t', `return ${text}`)(t);
+    }
+    return text;
+  }
+  /**
    * 异步加载数据
    */
   async function asyncLoadTreeData(treeNode) {
     if (treeNode.dataRef.children) {
       return Promise.resolve();
     }
-    if(props.url){
+    if (props.url) {
       return Promise.resolve();
     }
     let pid = treeNode.dataRef.key;
@@ -234,6 +263,7 @@
     let res = await defHttp.get({ url: Api.url, params }, { isTransformResponse: false });
     if (res.success) {
       for (let i of res.result) {
+        i.title = translateTitle(i.title);
         i.value = i.key;
         i.isLeaf = !!i.leaf;
       }
@@ -278,7 +308,22 @@
     } else {
       emitValue(value.value);
     }
-    treeValue.value = value;
+    // update-begin--author:liaozhiyang---date:20250423---for：【issues/8093】删除后会先变成编码再显示label文字
+    if (isArray(value)) {
+      // 编辑删除时有选中的值是异步（第二级以上的）会不显示label
+      value.forEach((item) => {
+        if (item.label === undefined && item.value != null) {
+          const findItem = treeValue.value.find((o) => o.value === item.value);
+          if (findItem) {
+            item.label = findItem.label;
+          }
+        }
+      });
+      treeValue.value = value;
+    } else {
+      treeValue.value = value;
+    }
+    // update-end--author:liaozhiyang---date:20250423---for：【issues/8093】删除后会先变成编码再显示label文字
   }
 
   function emitValue(value) {
@@ -334,6 +379,7 @@
     let res = await defHttp.get({ url, params }, { isTransformResponse: false });
     if (res.success && res.result) {
       for (let i of res.result) {
+        i.title = translateTitle(i.title);
         i.key = i.value;
         i.isLeaf = !!i.leaf;
       }

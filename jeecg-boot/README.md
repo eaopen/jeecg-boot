@@ -2,12 +2,12 @@
 JeecgBoot 低代码开发平台
 ===============
 
-当前最新版本： 3.7.0_all（发布日期：2024-06-23） 
+当前最新版本： 3.8.0（发布日期：2025-04-21） 
 
 
 [![AUR](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE)
 [![](https://img.shields.io/badge/Author-北京国炬软件-orange.svg)](http://jeecg.com/aboutusIndex)
-[![](https://img.shields.io/badge/version-3.7.0_all-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
+[![](https://img.shields.io/badge/version-3.8.0-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
 [![GitHub stars](https://img.shields.io/github/stars/zhangdaiscott/jeecg-boot.svg?style=social&label=Stars)](https://github.com/zhangdaiscott/jeecg-boot)
 [![GitHub forks](https://img.shields.io/github/forks/zhangdaiscott/jeecg-boot.svg?style=social&label=Fork)](https://github.com/zhangdaiscott/jeecg-boot)
 
@@ -35,7 +35,7 @@ JeecgBoot 是一款基于代码生成器的`低代码开发平台`！前后端�
 
 - 官方网站：  [http://www.jeecg.com](http://www.jeecg.com)
 - 新手指南： [快速入门](http://www.jeecg.com/doc/quickstart)
-- QQ交流群 ： ⑨808791225、其他(满)
+- QQ交流群 ： ⑩716488839、⑨808791225、其他(满)
 - 在线演示 ：  [在线演示](http://boot3.jeecg.com)   | [APP演示](http://jeecg.com/appIndex)
 > 演示系统的登录账号密码，请点击 [获取账号密码](http://jeecg.com/doc/demo) 获取 
 
@@ -44,14 +44,14 @@ JeecgBoot 是一款基于代码生成器的`低代码开发平台`！前后端�
 启动项目
 -----------------------------------
 
-- [IDEA启动前后端项目](https://help.jeecg.com/java/setup/idea/startup.html)
-- [Docker一键启动前后端](https://help.jeecg.com/java/docker/quick.html)
+- [IDEA启动前后端项目](https://help.jeecg.com/java/setup/idea/startup)
+- [Docker一键启动前后端](https://help.jeecg.com/java/docker/quick)
 
 
 微服务启动
 -----------------------------------
-- [单体快速切换微服务](https://help.jeecg.com/java/springcloud/switchcloud/monomer.html)
-- [Docker启动微服务后台](https://help.jeecg.com/java/docker/springcloud.html)
+- [单体快速切换微服务](https://help.jeecg.com/java/springcloud/switchcloud/monomer)
+- [Docker启动微服务后台](https://help.jeecg.com/java/docker/springcloud)
 
 
 
@@ -66,10 +66,10 @@ JeecgBoot 是一款基于代码生成器的`低代码开发平台`！前后端�
 - 基础框架：Spring Boot 2.7.18
 - 微服务框架： Spring Cloud Alibaba 2021.0.1.0
 - 持久层框架：MybatisPlus 3.5.3.2
-- 报表工具： JimuReport 1.7.6
+- 报表工具： JimuReport 1.9.4
 - 安全框架：Apache Shiro 1.12.0，Jwt 3.11.0
 - 微服务技术栈：Spring Cloud Alibaba、Nacos、Gateway、Sentinel、Skywalking
-- 数据库连接池：阿里巴巴Druid 1.1.22
+- 数据库连接池：阿里巴巴Druid 1.1.24
 - 日志打印：logback
 - 缓存：Redis
 - 其他：autopoi, fastjson，poi，Swagger-ui，quartz, lombok（简化代码）等。
@@ -97,6 +97,7 @@ JeecgBoot 是一款基于代码生成器的`低代码开发平台`！前后端�
 |   MariaDB   |  √   |
 |   达梦   |  √   |
 |   人大金仓   |  √   |
+|   TiDB   |  √   |
 
 
 
@@ -112,7 +113,7 @@ JeecgBoot 是一款基于代码生成器的`低代码开发平台`！前后端�
 - 6、分布式文件 Minio、阿里OSS √ 
 - 7、统一权限控制 JWT + Shiro √
 - 8、服务监控 SpringBootAdmin√
-- 9、链路跟踪 Skywalking   [参考文档](https://help.jeecg.com/java/springcloud/super/skywarking.html)
+- 9、链路跟踪 Skywalking   [参考文档](https://help.jeecg.com/java/springcloud/super/skywarking)
 - 10、消息中间件 RabbitMQ  √
 - 11、分布式任务 xxl-job  √ 
 - 12、分布式事务 Seata

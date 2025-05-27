@@ -5,18 +5,21 @@ import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.xkcoding.justauth.AuthRequestFactory;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.request.AuthRequest;
 import me.zhyd.oauth.utils.AuthStateUtils;
+import me.zhyd.oauth.utils.StringUtils;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.enums.MessageTypeEnum;
+import org.jeecg.common.system.api.ISysBaseAPI;
 import org.jeecg.common.system.util.JwtUtil;
 import org.jeecg.common.util.*;
 import org.jeecg.modules.base.service.BaseCommonService;
+import org.jeecg.modules.system.entity.SysDepart;
 import org.jeecg.modules.system.entity.SysThirdAccount;
 import org.jeecg.modules.system.entity.SysThirdAppConfig;
 import org.jeecg.modules.system.entity.SysUser;
@@ -25,6 +28,7 @@ import org.jeecg.modules.system.service.ISysDictService;
 import org.jeecg.modules.system.service.ISysThirdAccountService;
 import org.jeecg.modules.system.service.ISysThirdAppConfigService;
 import org.jeecg.modules.system.service.ISysUserService;
+import org.jeecg.modules.system.service.ISysDepartService;
 import org.jeecg.modules.system.service.impl.ThirdAppDingtalkServiceImpl;
 import org.jeecg.modules.system.service.impl.ThirdAppWechatEnterpriseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +64,8 @@ public class ThirdLoginController {
     private RedisUtil redisUtil;
 	@Autowired
 	private AuthRequestFactory factory;
+	@Autowired
+	private ISysDepartService sysDepartService;
 
 	@Autowired
 	private ThirdAppWechatEnterpriseServiceImpl thirdAppWechatEnterpriseService;
@@ -68,6 +74,9 @@ public class ThirdLoginController {
 
 	@Autowired
 	private ISysThirdAppConfigService appConfigService;
+
+	@Autowired
+	public ISysBaseAPI sysBaseAPI;
 
 	@RequestMapping("/render/{source}")
     public void render(@PathVariable("source") String source, HttpServletResponse response) throws IOException {
@@ -223,7 +232,11 @@ public class ThirdLoginController {
 	public Result<JSONObject> getThirdLoginUser(@PathVariable("token") String token,@PathVariable("thirdType") String thirdType,@PathVariable("tenantId") String tenantId) throws Exception {
 		Result<JSONObject> result = new Result<JSONObject>();
 		String username = JwtUtil.getUsername(token);
-
+		//update-begin---author:chenrui ---date:20250210  for：[QQYUN-11021]三方登录接口通过token获取用户信息漏洞修复------------
+		if (!TokenUtils.verifyToken(token, sysBaseAPI, redisUtil)) {
+			return Result.noauth("token验证失败");
+		}
+		//update-end---author:chenrui ---date:20250210  for：[QQYUN-11021]三方登录接口通过token获取用户信息漏洞修复------------
 		//1. 校验用户是否有效
 		SysUser sysUser = sysUserService.getUserByName(username);
 		result = sysUserService.checkUserIsEffective(sysUser);
@@ -250,8 +263,8 @@ public class ThirdLoginController {
 		}
 		//update-end-author:wangshuai date:20201118 for:如果真实姓名和头像不存在就取第三方登录的
 		JSONObject obj = new JSONObject();
-		//TODO 第三方登确定登录租户和部门逻辑
-
+		//第三方登确定登录租户和部门逻辑
+		this.setUserTenantAndDepart(sysUser,obj,result);		
 		//用户登录信息
 		obj.put("userInfo", sysUser);
 		//获取字典缓存【解决 #jeecg-boot/issues/3998】
@@ -270,7 +283,7 @@ public class ThirdLoginController {
 	 * @param jsonObject
 	 * @return
 	 */
-	@ApiOperation("手机号登录接口")
+	@Operation(summary ="手机号登录接口")
 	@PostMapping("/bindingThirdPhone")
 	@ResponseBody
 	public Result<String> bindingThirdPhone(@RequestBody JSONObject jsonObject) {
@@ -527,5 +540,89 @@ public class ThirdLoginController {
 		} catch (Exception e) {
 			return Result.error("注册失败");
 		}
+	}
+
+	/**
+	 * 设置用户租户和部门信息
+	 *
+	 * @param sysUser
+	 * @param obj
+	 * @param result
+	 */
+	private void setUserTenantAndDepart(SysUser sysUser, JSONObject obj, Result<JSONObject> result) {
+		//1.设置登录租户
+		sysUserService.setLoginTenant(sysUser, obj, sysUser.getUsername(), result);
+		//2.设置登录部门
+		String orgCode = sysUser.getOrgCode();
+		//部门不为空还是用原来的部门code
+		if(StringUtils.isEmpty(orgCode)){
+			List<SysDepart> departs = sysDepartService.queryUserDeparts(sysUser.getId());
+			//部门不为空取第一个作为当前登录部门
+			if(CollectionUtil.isNotEmpty(departs)){
+				orgCode = departs.get(0).getOrgCode();
+				sysUser.setOrgCode(orgCode);
+				this.sysUserService.updateUserDepart(sysUser.getUsername(), orgCode,null);
+			}
+		}
+	}
+
+	/**
+	 * 新版钉钉登录
+	 *
+	 * @param authCode
+	 * @param state
+	 * @param tenantId
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@GetMapping("/oauth2/dingding/login")
+	public String OauthDingDingLogin(@RequestParam(value = "authCode", required = false) String authCode,
+									 @RequestParam("state") String state,
+									 @RequestParam(name = "tenantId",defaultValue = "0") String tenantId,
+									 HttpServletResponse response) {
+		SysUser loginUser = thirdAppDingtalkService.oauthDingDingLogin(authCode,Integer.valueOf(tenantId));
+		try {
+			String redirect = "";
+			if (state.indexOf("?") > 0) {
+				String[] arr = state.split("\\?");
+				state = arr[0];
+				if(arr.length>1){
+					redirect = arr[1];
+				}
+			}
+			String token = saveToken(loginUser);
+			state += "/oauth2-app/login?oauth2LoginToken=" + URLEncoder.encode(token, "UTF-8") + "&tenantId=" + URLEncoder.encode(tenantId, "UTF-8");
+			state += "&thirdType=DINGTALK";
+			if (redirect != null && redirect.length() > 0) {
+				state += "&" + redirect;
+			}
+			log.info("OAuth2登录重定向地址: " + state);
+			try {
+				response.sendRedirect(state);
+				return "ok";
+			} catch (IOException e) {
+				log.error(e.getMessage(),e);
+				return "重定向失败";
+			}
+		} catch (UnsupportedEncodingException e) {
+			log.error(e.getMessage(),e);
+			return "解码失败";
+		}
+	}
+
+	/**
+	 * 获取企业id和应用id
+	 * @param tenantId
+	 * @return
+	 */
+	@ResponseBody
+	@GetMapping("/get/corpId/clientId")
+	public Result<SysThirdAppConfig> getCorpIdClientId(@RequestParam(value = "tenantId", defaultValue = "0") String tenantId){
+		Result<SysThirdAppConfig> result = new Result<>();
+		SysThirdAppConfig sysThirdAppConfig = thirdAppDingtalkService.getCorpIdClientId(Integer.valueOf(tenantId));
+		result.setSuccess(true);
+		result.setResult(sysThirdAppConfig);
+		return result;
 	}
 }

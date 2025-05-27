@@ -746,7 +746,11 @@ public class QueryGenerator {
 	private static boolean judgedIsUselessField(String name) {
 		return "class".equals(name) || "ids".equals(name)
 				|| "page".equals(name) || "rows".equals(name)
-				|| "sort".equals(name) || "order".equals(name);
+//// update-begin--author:sunjianlei date:20240808 for：【TV360X-2009】取消过滤 sort、order 字段，防止前端排序报错 ------
+//// https://github.com/jeecgboot/JeecgBoot/issues/6937
+//				|| "sort".equals(name) || "order".equals(name)
+//// update-end----author:sunjianlei date:20240808 for：【TV360X-2009】取消过滤 sort、order 字段，防止前端排序报错 ------
+				;
 	}
 
 	
@@ -801,7 +805,9 @@ public class QueryGenerator {
 					addEasyQuery(queryWrapper, name, rule, DateUtils.str2Date(dateStr,DateUtils.datetimeFormat.get()));
 				}
 			}else {
-				addEasyQuery(queryWrapper, name, rule, NumberUtils.parseNumber(dataRule.getRuleValue(), propertyType));
+				//update-begin---author:chenrui ---date:20241125  for：[issues/7481]多租户模式下 数据权限使用变量：#{tenant_id} 报错------------
+				addEasyQuery(queryWrapper, name, rule, NumberUtils.parseNumber(converRuleValue(dataRule.getRuleValue()), propertyType));
+				//update-end---author:chenrui ---date:20241125  for：[issues/7481]多租户模式下 数据权限使用变量：#{tenant_id} 报错------------
 			}
 		}
 	}
@@ -834,6 +840,9 @@ public class QueryGenerator {
 	public static String getSqlRuleValue(String sqlRule){
 		try {
 			Set<String> varParams = getSqlRuleParams(sqlRule);
+			if (varParams == null || varParams.isEmpty()) {
+				return sqlRule;
+			}
 			for(String var:varParams){
 				String tempValue = converRuleValue(var);
 				sqlRule = sqlRule.replace("#{"+var+"}",tempValue);
@@ -852,7 +861,9 @@ public class QueryGenerator {
 			return null;
 		}
 		Set<String> varParams = new HashSet<String>();
-		String regex = "\\#\\{\\w+\\}";
+		//update-begin---author:chenrui ---date:20250108  for：[QQYUN-10785]数据权限，查看自己拥有部门的权限中存在问题 #7288------------
+		String regex = "#\\{\\[*\\w+]*}";
+		//update-end---author:chenrui ---date:20250108  for：[QQYUN-10785]数据权限，查看自己拥有部门的权限中存在问题 #7288------------
 		
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(sql);

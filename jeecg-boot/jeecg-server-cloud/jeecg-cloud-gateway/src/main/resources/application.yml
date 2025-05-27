@@ -1,6 +1,10 @@
 server:
   port: 9999
 
+knife4j:
+  gateway:
+    enabled: true
+
 spring:
   application:
     name: jeecg-gateway

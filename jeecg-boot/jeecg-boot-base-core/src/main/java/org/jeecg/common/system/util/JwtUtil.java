@@ -6,11 +6,12 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Joiner;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -63,7 +64,7 @@ public class JwtUtil {
             os.flush();
             os.close();
         } catch (IOException e) {
-            e.printStackTrace();
+			log.error(e.getMessage(), e);
         }
     }
 
@@ -82,7 +83,8 @@ public class JwtUtil {
 			// 效验TOKEN
 			DecodedJWT jwt = verifier.verify(token);
 			return true;
-		} catch (Exception exception) {
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
 			return false;
 		}
 	}
@@ -97,6 +99,7 @@ public class JwtUtil {
 			DecodedJWT jwt = JWT.decode(token);
 			return jwt.getClaim("username").asString();
 		} catch (JWTDecodeException e) {
+			log.warn(e.getMessage(), e);
 			return null;
 		}
 	}
@@ -195,6 +198,16 @@ public class JwtUtil {
 		} else {
 			key = key;
 		}
+		//update-begin---author:chenrui ---date:20250107  for：[QQYUN-10785]数据权限，查看自己拥有部门的权限中存在问题 #7288------------
+		// 是否存在字符串标志
+		boolean multiStr;
+		if(oConvertUtils.isNotEmpty(key) && key.trim().matches("^\\[\\w+]$")){
+			key = key.substring(1,key.length()-1);
+			multiStr = true;
+		} else {
+            multiStr = false;
+        }
+		//update-end---author:chenrui ---date:20250107  for：[QQYUN-10785]数据权限，查看自己拥有部门的权限中存在问题 #7288------------
 		//替换为当前系统时间(年月日)
 		if (key.equals(DataBaseConstant.SYS_DATE)|| key.toLowerCase().equals(DataBaseConstant.SYS_DATE_TABLE)) {
 			returnValue = DateUtils.formatDate();
@@ -263,11 +276,30 @@ public class JwtUtil {
 			if(user==null){
 				//TODO 暂时使用用户登录部门，存在逻辑缺陷，不是用户所拥有的部门
 				returnValue = sysUser.getOrgCode();
+				//update-begin---author:chenrui ---date:20250107  for：[QQYUN-10785]数据权限，查看自己拥有部门的权限中存在问题 #7288------------
+				returnValue = multiStr ? "'" + returnValue + "'" : returnValue;
+				//update-end---author:chenrui ---date:20250107  for：[QQYUN-10785]数据权限，查看自己拥有部门的权限中存在问题 #7288------------
 			}else{
 				if(user.isOneDepart()) {
 					returnValue = user.getSysMultiOrgCode().get(0);
+					//update-begin---author:chenrui ---date:20250107  for：[QQYUN-10785]数据权限，查看自己拥有部门的权限中存在问题 #7288------------
+					returnValue = multiStr ? "'" + returnValue + "'" : returnValue;
+					//update-end---author:chenrui ---date:20250107  for：[QQYUN-10785]数据权限，查看自己拥有部门的权限中存在问题 #7288------------
 				}else {
-					returnValue = Joiner.on(",").join(user.getSysMultiOrgCode());
+					//update-begin---author:chenrui ---date:20250107  for：[QQYUN-10785]数据权限，查看自己拥有部门的权限中存在问题 #7288------------
+					returnValue = user.getSysMultiOrgCode().stream()
+							.filter(Objects::nonNull)
+							//update-begin---author:chenrui ---date:20250224  for：[issues/7288]数据权限，查看自己拥有部门的权限中存在问题 #7288------------
+							.map(orgCode -> {
+								if (multiStr) {
+									return "'" + orgCode + "'";
+								} else {
+									return orgCode;
+								}
+							})
+							//update-end---author:chenrui ---date:20250224  for：[issues/7288]数据权限，查看自己拥有部门的权限中存在问题 #7288------------
+							.collect(Collectors.joining(", "));
+					//update-end---author:chenrui ---date:20250107  for：[QQYUN-10785]数据权限，查看自己拥有部门的权限中存在问题 #7288------------
 				}
 			}
 		}

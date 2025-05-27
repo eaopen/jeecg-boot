@@ -222,7 +222,7 @@
         // update-end--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题
       );
 
-      const { getScrollRef, redoHeight } = useTableScroll(getProps, tableElRef, getColumnsRef, getRowSelectionRef, getDataSourceRef);
+      const { getScrollRef, redoHeight } = useTableScroll(getProps, tableElRef, getColumnsRef, getRowSelectionRef, getDataSourceRef, slots);
 
       const { customRow } = useCustomRow(getProps, {
         setSelectedRowKeys,
@@ -247,7 +247,11 @@
       const { getHeaderProps } = useTableHeader(getProps, slots, handlers);
       // update-begin--author:liaozhiyang---date:20240425---for：【pull/1201】添加antd的TableSummary功能兼容老的summary（表尾合计）
       const getSummaryProps = computed(() => {
-        return pick(unref(getProps), ['summaryFunc', 'summaryData', 'hasExpandedRow', 'rowKey']);
+        // update-begin--author:liaozhiyang---date:20250318---for：【issues/7956】修复showSummary: false时且有内嵌子表时合计栏错位
+        const result = pick(unref(getProps), ['summaryFunc', 'summaryData', 'hasExpandedRow', 'rowKey']);
+        result['hasExpandedRow'] = Object.keys(slots).includes('expandedRowRender');
+        // update-end--author:liaozhiyang---date:20250318---for：【issues/7956】修复showSummary: false时且有内嵌子表时合计栏错位
+        return result;
       });
       const getIsEmptyData = computed(() => {
         return (unref(getDataSourceRef) || []).length === 0;
@@ -406,7 +410,9 @@
         getProps.value.defaultExpandAllRows && expandAll();
       })
       // update-end--author:sunjianlei---date:20231226---for：【issues/945】BasicTable组件设置默认展开不生效
-      expose(tableAction);
+      // update-begin--author:liaozhiyang---date:20241225---for：【issues/7588】选择后自动刷新表格
+      expose({ ...tableAction, handleSearchInfoChange });
+      // update-end--author:liaozhiyang---date:20241225---for：【issues/7588】选择后自动刷新表格
 
       emit('register', tableAction, formActions);
 
@@ -424,7 +430,22 @@
         tableAction,
         redoHeight,
         handleResizeColumn: (w, col) => {
-        console.log('col',col);
+          // update-begin--author:liaozhiyang---date:20240903---for：【issues/7101】列配置resizable: true时，表尾合计的列宽没有同步改变
+          const columns = getColumns();
+          const findItem = columns.find((item) => {
+            if (item['dataIndex'] != null) {
+              return item['dataIndex'] === col['dataIndex'];
+            } else if (item['flag'] != null) {
+              return item['flag'] === col['flag'];
+            }
+            return false;
+          });
+          if (findItem) {
+            findItem.width = w;
+            setColumns(columns);
+          }
+          // update-end--author:liaozhiyang---date:20240903---for：【issues/7101】列配置resizable: true时，表尾合计的列宽没有同步改变
+          console.log('col',col);
           col.width = w;
         },
         getFormProps: getFormProps as any,
@@ -590,7 +611,12 @@
       .ant-table > .ant-table-footer {
         padding: 12px 0 0;
       }
-
+      .ant-table > .ant-table-footer {
+        // update-begin--author:liaozhiyang---date:20241111---for：【issues/7413】合计行有点对不齐
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        // update-end--author:liaozhiyang---date:20241111---for：【issues/7413】合计行有点对不齐
+      }
       .ant-table.ant-table-bordered > .ant-table-footer {
         border: 0;
       }

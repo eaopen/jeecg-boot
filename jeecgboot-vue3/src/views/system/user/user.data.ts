@@ -138,6 +138,7 @@ export const formSchema: FormSchema[] = [
     label: '用户账号',
     field: 'username',
     component: 'Input',
+    required: true,
     dynamicDisabled: ({ values }) => {
       return !!values.id;
     },
@@ -235,14 +236,10 @@ export const formSchema: FormSchema[] = [
   {
     label: '租户',
     field: 'relTenantIds',
-    component: 'ApiSelect',
+    component: 'JDictSelectTag',
     componentProps: {
-      mode: 'multiple',
-      api: getAllTenantList,
-      numberToString: true,
-      labelField: 'name',
-      valueField: 'id',
-      immediate: false,
+      dictCode:"sys_tenant,name,id",
+      mode: "multiple"
     },
   },
   {

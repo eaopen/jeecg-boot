@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jeecgframework.boot</groupId>
 		<artifactId>jeecg-module-system</artifactId>
-		<version>3.7.0</version>
+		<version>3.8.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
@@ -24,10 +24,16 @@
 			<artifactId>hibernate-re</artifactId>
 		</dependency>
 
+		<!-- AI大模型管理 -->
+		<dependency>
+			<groupId>org.jeecgframework.boot</groupId>
+			<artifactId>jeecg-boot-module-airag</artifactId>
+			<version>${jeecgboot.version}</version>
+		</dependency>
 		<!-- 企业微信/钉钉 api -->
 		<dependency>
 			<groupId>org.jeecgframework</groupId>
-			<artifactId>jeewx-api</artifactId>
+			<artifactId>weixin4j</artifactId>
 		</dependency>
 		<!-- 积木报表 -->
 		<dependency>
@@ -36,13 +42,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.jeecgframework.jimureport</groupId>
-			<artifactId>drag-free</artifactId>
+			<artifactId>jimureport-nosql-starter</artifactId>
 		</dependency>
-	<!-- 积木报表 mongo redis 支持包 
+		<!-- 积木BI -->
 		<dependency>
 			<groupId>org.jeecgframework.jimureport</groupId>
-			<artifactId>jimureport-nosql-starter</artifactId>
-		</dependency>-->
+			<artifactId>jimubi-spring-boot-starter</artifactId>
+		</dependency>
 	</dependencies>
 	
 </project>

@@ -22,6 +22,12 @@
           </template>
           <div class="base-desc">完成步骤1后，填入Agentld、 AppKey、AppSecret后 可对接应用与同步通讯录</div>
           <div class="flex-flow">
+            <div class="base-title">CorpId</div>
+            <div class="base-message">
+              <a-input-password v-model:value="appConfigData.corpId" readonly />
+            </div>
+          </div>
+          <div class="flex-flow">
             <div class="base-title">Agentld</div>
             <div class="base-message">
               <a-input-password v-model:value="appConfigData.agentId" readonly />
@@ -167,7 +173,7 @@
                 Modal.warning(options)
               } else {
                 createMessage.warning({
-                  content: "同步失败，请检查对接信息录入中是否填写正确，并确认是否已开启钉钉配置！",
+                  content: res.message || "同步失败，请检查对接信息录入中是否填写正确，并确认是否已开启钉钉配置！",
                   duration: 5
                 });
               }

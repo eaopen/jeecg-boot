@@ -1531,8 +1531,8 @@ public class SysBaseApiImpl implements ISysBaseAPI {
 	 * @return
 	 */
 	@Override
-	public List<DictModel> loadDictItemByKeyword(String dictCode, String keyword, Integer pageSize) {
-		return sysDictService.loadDict(dictCode, keyword, pageSize);
+	public List<DictModel> loadDictItemByKeyword(String dictCode, String keyword, Integer pageNo, Integer pageSize) {
+		return sysDictService.loadDict(dictCode, keyword,pageNo, pageSize);
 	}
 
 	@Override
@@ -1597,7 +1597,13 @@ public class SysBaseApiImpl implements ISysBaseAPI {
 				// 邮件消息要解析Markdown
 				message.setContent(HTMLUtils.parseMarkdown(message.getContent()));
 			}
-			emailSendMsgHandle.sendMessage(message);
+			//update-begin---author:wangshuai---date:2024-11-20---for:【QQYUN-8523】敲敲云发邮件通知，不稳定---
+			if(message.getIsTimeJob() != null && message.getIsTimeJob()){
+				emailSendMsgHandle.sendEmailMessage(message);
+			}else{
+				emailSendMsgHandle.sendMessage(message);
+			}
+			//update-end---author:wangshuai---date:2024-11-20---for:【QQYUN-8523】敲敲云发邮件通知，不稳定---
 		}else if(MessageTypeEnum.DD.getType().equals(messageType)){
 			ddSendMsgHandle.sendMessage(message);
 		}else if(MessageTypeEnum.QYWX.getType().equals(messageType)){

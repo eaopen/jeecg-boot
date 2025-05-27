@@ -32,6 +32,7 @@
 <#assign need_checkbox = false>
 <#assign need_range_number = false>
 <#assign is_range = false>
+<#assign is_like = false>
 <#assign query_flag = false>
     <!--查询区域-->
     <div class="jeecg-basic-table-form-container">
@@ -75,11 +76,14 @@
 <#if po.classType=='time'>
 <#assign need_time = true>
 </#if>
-<#if po.queryMode!='single' && (po.fieldDbType=='int' || po.fieldDbType=='double' || po.fieldDbType=='BigDecimal')>
+<#if po.queryMode=='group' && (po.fieldDbType=='int' || po.fieldDbType=='double' || po.fieldDbType=='BigDecimal')>
 <#assign need_range_number = true>
 </#if>
-<#if po.queryMode!='single'>
+<#if po.queryMode=='group'>
 <#assign is_range = true>
+</#if>
+<#if po.queryMode=='like'>
+<#assign is_like = true>
 </#if>
   <#include "/common/form/native/vue3NativeSearch.ftl">
 </#list>
@@ -177,6 +181,10 @@
 <#if need_pca>
   import { getAreaTextByCode } from '/@/components/Form/src/utils/Area';
 </#if>
+  <#if need_popup_dict>
+ import {getPopDictByCode} from "@/utils/dict";
+ import {filterMultiDictText} from "@/utils/dict/JDictSelectUtil";
+  </#if>
 <#if is_range>
   import { cloneDeep } from "lodash-es";
 </#if>
@@ -202,6 +210,7 @@
         fixed: 'right',
       },
       beforeFetch: async (params) => {
+        params.hasQuery = "true";
        <#if is_range>
         let rangerQuery = await setRangeQuery();
         return Object.assign(params, rangerQuery);
@@ -209,6 +218,9 @@
         return Object.assign(params, queryParam.value);
        </#if>
       },
+      <#if need_popup_dict>
+      afterFetch: afterFetch
+      </#if>
     },
     exportConfig: {
       name: "${tableVo.ftlDescription}",
@@ -511,7 +523,7 @@
     let params = {
       flowCode: 'dev_${tableName}_001',
       id: record.id,
-      formUrl: '${entityPackage}/components/${entityName}Form',
+      formUrl: '${entityPackagePath}/components/${entityName}Form',
       formUrlMobile: ''
     }
     await startProcess(params);
@@ -617,6 +629,28 @@
     }
     return queryParamClone;
   }
+  </#if>
+
+   <#if need_popup_dict>
+     /**
+      * 翻译Popup字典配置
+     */
+      async function afterFetch(records){
+   <#list columns as po>
+      <#if po.isQuery=='Y' || po.isShowList=='Y'>
+        <#if po.classType=='popup_dict'>
+        const ${po.fieldName}Keys = [...new Set(records.map((item) => item['${po.fieldName}']).flatMap((item) => item && item.split(',')))];
+        if(${po.fieldName}Keys && ${po.fieldName}Keys.length){
+         const dictOptions = await getPopDictByCode(${po.fieldName}Keys.join(','), '${po.dictTable},${po.dictField},${po.dictText}');
+         records.forEach((item) => {
+           item['${po.fieldName}_dictText'] = filterMultiDictText(dictOptions, item['${po.fieldName}']);
+         });
+        }
+        </#if>
+      </#if>
+   </#list>
+       return records;
+     }
   </#if>
 </script>
 

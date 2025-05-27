@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.jeecg.dingtalk.api.base.JdtBaseAPI;
 import com.jeecg.dingtalk.api.core.response.Response;
+import com.jeecg.dingtalk.api.core.util.HttpUtil;
 import com.jeecg.dingtalk.api.core.vo.AccessToken;
 import com.jeecg.dingtalk.api.core.vo.PageResult;
 import com.jeecg.dingtalk.api.department.JdtDepartmentAPI;
@@ -28,9 +29,13 @@ import org.jeecg.common.config.TenantContext;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.SymbolConstant;
 import org.jeecg.common.constant.enums.MessageTypeEnum;
+import org.jeecg.common.exception.JeecgBootBizTipException;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.system.util.JwtUtil;
-import org.jeecg.common.util.*;
+import org.jeecg.common.util.PasswordUtil;
+import org.jeecg.common.util.RestUtil;
+import org.jeecg.common.util.SpringContextUtils;
+import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.config.JeecgBaseConfig;
 import org.jeecg.config.mybatis.MybatisPlusSaasConfig;
 import org.jeecg.modules.system.entity.*;
@@ -45,10 +50,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -742,6 +744,7 @@ public class ThirdAppDingtalkServiceImpl implements IThirdAppService {
         }
         sysDepart.setDepartName(department.getName());
         sysDepart.setDepartOrder(department.getOrder());
+        sysDepart.setDingIdentifier(department.getSource_identifier());
         return sysDepart;
     }
 
@@ -1147,6 +1150,11 @@ public class ThirdAppDingtalkServiceImpl implements IThirdAppService {
         }
         // 获取【钉钉】所有的部门
         List<Department> departments = JdtDepartmentAPI.listAll(accessToken);
+        //update-begin---author:wangshuai---date:2024-06-25---for:【TV360X-1316】钉钉同步提示消息不正确---
+        if(departments.isEmpty()){
+            throw new JeecgBootBizTipException("请查看配置参数和白名单是否配置！");
+        }
+        //update-end---author:wangshuai---date:2024-06-25---for:【TV360X-1316】钉钉同步提示消息不正确---
         String username = JwtUtil.getUserNameByToken(SpringContextUtils.getHttpServletRequest());
         List<JdtDepartmentTreeVo> departmentTreeList = JdtDepartmentTreeVo.listToTree(departments);
         int tenantId = oConvertUtils.getInt(TenantContext.getTenant(), 0);
@@ -1182,7 +1190,11 @@ public class ThirdAppDingtalkServiceImpl implements IThirdAppService {
                 try {
                     userMapper.updateById(updateSysUser);
                     String str = String.format("用户 %s(%s) 更新成功！", updateSysUser.getRealname(), updateSysUser.getUsername());
-                    syncInfo.addSuccessInfo(str);
+                    //update-begin---author:wangshuai---date:2024-06-24---for:【TV360X-1317】钉钉同步 同步成功之后 重复提示---
+                    if(!syncInfo.getSuccessInfo().contains(str)){
+                        syncInfo.addSuccessInfo(str);
+                    }
+                    //update-end---author:wangshuai---date:2024-06-24---for:【TV360X-1317】钉钉同步 同步成功之后 重复提示---
                 } catch (Exception e) {
                     this.syncUserCollectErrInfo(e, user, syncInfo);
                 }
@@ -1244,4 +1256,57 @@ public class ThirdAppDingtalkServiceImpl implements IThirdAppService {
             }
         }
     }
+
+    //=================================== begin 新版钉钉登录 ============================================
+    /**
+     * 钉钉登录获取用户信息
+     * 【QQYUN-9421】钉钉登录后打开了敲敲云，换其他账号登录后，再打开敲敲云显示的是原来账号的应用
+     * @param authCode
+     * @param tenantId
+     * @return
+     */
+    public SysUser oauthDingDingLogin(String authCode, Integer tenantId) {
+        Long count = tenantMapper.tenantIzExist(tenantId);
+        if(ObjectUtil.isEmpty(count) || 0 == count){
+            throw new JeecgBootException("租户不存在！");
+        }
+        SysThirdAppConfig config = configMapper.getThirdConfigByThirdType(tenantId, MessageTypeEnum.DD.getType());
+        String accessToken = this.getTenantAccessToken(config);
+        if(StringUtils.isEmpty(accessToken)){
+            throw new JeecgBootBizTipException("accessToken获取失败");
+        }
+        String getUserInfoUrl = "https://oapi.dingtalk.com/topapi/v2/user/getuserinfo?access_token=" + accessToken;
+        Map<String,String> params = new HashMap<>();
+        params.put("code",authCode);
+        Response<JSONObject> userInfoResponse = HttpUtil.post(getUserInfoUrl, JSON.toJSONString(params));
+        if (userInfoResponse.isSuccess()) {
+            String userId = userInfoResponse.getResult().getString("userid");
+            // 判断第三方用户表有没有这个人
+            LambdaQueryWrapper<SysThirdAccount> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(SysThirdAccount::getThirdType, THIRD_TYPE);
+            queryWrapper.eq(SysThirdAccount::getTenantId, tenantId);
+            queryWrapper.and((wrapper)->wrapper.eq(SysThirdAccount::getThirdUserUuid,userId).or().eq(SysThirdAccount::getThirdUserId,userId));
+            SysThirdAccount thirdAccount = sysThirdAccountService.getOne(queryWrapper);
+            if (thirdAccount != null) {
+                return this.getSysUserByThird(thirdAccount, null, userId, accessToken, tenantId);
+            }else{
+                throw new JeecgBootException("该用户没有同步，请先同步！");
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 根据租户id获取企业id和应用id
+     * 【QQYUN-9421】钉钉登录后打开了敲敲云，换其他账号登录后，再打开敲敲云显示的是原来账号的应用
+     * @param tenantId
+     */
+    public SysThirdAppConfig getCorpIdClientId(Integer tenantId) {
+        LambdaQueryWrapper<SysThirdAppConfig> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysThirdAppConfig::getThirdType, THIRD_TYPE);
+        queryWrapper.eq(SysThirdAppConfig::getTenantId, tenantId);
+        queryWrapper.select(SysThirdAppConfig::getCorpId,SysThirdAppConfig::getClientId);
+        return configMapper.selectOne(queryWrapper);
+    }
+    //=================================== end 新版钉钉登录 ============================================
 }

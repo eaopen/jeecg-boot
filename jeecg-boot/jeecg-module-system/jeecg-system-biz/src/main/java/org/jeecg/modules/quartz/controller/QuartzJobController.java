@@ -3,8 +3,8 @@ package org.jeecg.modules.quartz.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -15,6 +15,7 @@ import org.jeecg.common.constant.SymbolConstant;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.ImportExcelUtil;
+import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.quartz.entity.QuartzJob;
 import org.jeecg.modules.quartz.service.IQuartzJobService;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
@@ -47,7 +48,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/sys/quartzJob")
 @Slf4j
-@Api(tags = "定时任务接口")
+@Tag(name = "定时任务接口")
 public class QuartzJobController {
 	@Autowired
 	private IQuartzJobService quartzJobService;
@@ -154,7 +155,7 @@ public class QuartzJobController {
 	//@RequiresRoles("admin")
     @RequiresPermissions("system:quartzJob:pause")
 	@GetMapping(value = "/pause")
-	@ApiOperation(value = "停止定时任务")
+	@Operation(summary = "停止定时任务")
 	public Result<Object> pauseJob(@RequestParam(name = "id") String id) {
 		QuartzJob job = quartzJobService.getById(id);
 		if (job == null) {
@@ -173,7 +174,7 @@ public class QuartzJobController {
 	//@RequiresRoles("admin")
     @RequiresPermissions("system:quartzJob:resume")
 	@GetMapping(value = "/resume")
-	@ApiOperation(value = "启动定时任务")
+	@Operation(summary = "启动定时任务")
 	public Result<Object> resumeJob(@RequestParam(name = "id") String id) {
 		QuartzJob job = quartzJobService.getById(id);
 		if (job == null) {
@@ -206,6 +207,12 @@ public class QuartzJobController {
 	public ModelAndView exportXls(HttpServletRequest request, QuartzJob quartzJob) {
 		// Step.1 组装查询条件
 		QueryWrapper<QuartzJob> queryWrapper = QueryGenerator.initQueryWrapper(quartzJob, request.getParameterMap());
+		// 过滤选中数据
+		String selections = request.getParameter("selections");
+		if (oConvertUtils.isNotEmpty(selections)) {
+			List<String> selectionList = Arrays.asList(selections.split(","));
+			queryWrapper.in("id",selectionList);
+		}
 		// Step.2 AutoPoi 导出Excel
 		ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
 		List<QuartzJob> pageList = quartzJobService.list(queryWrapper);

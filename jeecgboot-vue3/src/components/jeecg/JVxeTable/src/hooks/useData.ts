@@ -18,10 +18,10 @@ export function useData(props: JVxeTableProps): JVxeDataProps {
       // rowId: props.rowKey,
       rowConfig: {
         keyField: props.rowKey,
+        // 高亮hover的行
+        isHover: true,
       },
       // update-end--author:liaozhiyang---date:20240607---for：【TV360X-327】vxetable警告
-      // 高亮hover的行
-      highlightHoverRow: true,
 
       // --- 【issues/209】自带的tooltip会错位，所以替换成原生的title ---
       // 溢出隐藏并显示tooltip
@@ -41,8 +41,9 @@ export function useData(props: JVxeTableProps): JVxeDataProps {
         // update-end--author:liaozhiyang---date:20231013---for：【QQYUN-5133】JVxeTable 行编辑升级
       },
       expandConfig: {
-        iconClose: 'ant-table-row-expand-icon ant-table-row-expand-icon-collapsed',
-        iconOpen: 'ant-table-row-expand-icon ant-table-row-expand-icon-expanded',
+        iconClose: 'vxe-icon-arrow-right',
+        iconOpen: 'vxe-icon-arrow-down',
+        ...props.expandConfig,
       },
       // 虚拟滚动配置，y轴大于xx条数据时启用虚拟滚动
       scrollY: {

@@ -1,7 +1,11 @@
 server:
   port: 8080
-  tomcat:
-    max-swallow-size: -1
+  undertow:
+    # max-http-post-size: 10MB # 平替 tomcat server.tomcat.max-swallow-siz， undertow该值默认为-1
+    worker-threads: 16  # 4核CPU标准配置
+    buffers:
+      websocket: 8192 # WebSocket缓冲 以字节为单位，这里设置为8 KB
+      io: 16384 # IO操作缓冲 以字节为单位，这里设置为16 KB
   error:
     include-exception: true
     include-stacktrace: ALWAYS
@@ -17,30 +21,12 @@ management:
   endpoints:
     web:
       exposure:
-        include: metrics,httptrace-new
+        include: metrics,jeecghttptrace
 
 spring:
-  # flyway配置
   flyway:
     # 是否启用flyway
     enabled: true
-    # 编码格式，默认UTF-8
-    encoding: UTF-8
-    # 迁移sql脚本文件存放路径，官方默认db/migration
-    locations: classpath:flyway/sql/mysql
-    # 迁移sql脚本文件名称的前缀，默认V
-    sql-migration-prefix: V
-    # 迁移sql脚本文件名称的分隔符，默认2个下划线__
-    sql-migration-separator: __
-    # 避免带${}sql执行失败
-    placeholder-prefix: '#('
-    placeholder-suffix: )
-    # 迁移sql脚本文件名称的后缀
-    sql-migration-suffixes: .sql
-    # 迁移时是否进行校验，默认true
-    validate-on-migrate: true
-    # 当迁移发现数据库非空且存在没有元数据的表时，自动执行基准迁移，新建schema_version表
-    baseline-on-migrate: true
     # 是否关闭要清除已有库下的表功能,生产环境必须为true,否则会删库，非常重要！！！
     clean-disabled: true
   servlet:
@@ -48,16 +34,18 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
   mail:
+    # 定时任务发送邮件
+    timeJobSend: false
     host: smtp.163.com
     username: jeecgos@163.com
     password: ??
     properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-            required: true
+      mail.smtp.timeout: 10000  # 连接超时（毫秒）
+      mail.smtp.connectiontimeout: 10000  # 连接超时（毫秒）
+      mail.smtp.writetimeout: 10000  # 写入超时（毫秒）
+      mail.smtp.auth: true
+      smtp.ssl.enable: true
+      mail.debug: true  # 启用调试模式(查看详细日志)
   ## quartz定时任务,采用数据库方式
   quartz:
     job-store-type: jdbc
@@ -176,7 +164,7 @@ spring:
     database: 0
     host: 127.0.0.1
     port: 6379
-    password: ''
+    password:
 #mybatis plus 设置
 mybatis-plus:
   mapper-locations: classpath*:org/jeecg/**/xml/*Mapper.xml
@@ -197,6 +185,22 @@ mybatis-plus:
 minidao:
   base-package: org.jeecg.modules.jmreport.*,org.jeecg.modules.drag.*
 jeecg:
+  # AI集成
+  ai-chat:
+    enabled: true
+    model: deepseek-chat
+    apiKey: ??
+    apiHost: https://api.deepseek.com
+    timeout: 60
+  # AIRag向量库
+  ai-rag:
+    embed-store:
+      host: 127.0.0.1
+      port: 5432
+      database: postgres
+      user: postgres
+      password: postgres
+      table: embeddings
   # 平台上线安全配置
   firewall:
     # 数据源安全 (开启后，Online报表和图表的数据源为必填)
@@ -226,11 +230,18 @@ jeecg:
     secretKey: ??
     endpoint: oss-cn-beijing.aliyuncs.com
     bucketName: jeecgdev
-  # ElasticSearch 6设置
-  elasticsearch:
-    cluster-name: jeecg-ES
-    cluster-nodes: 127.0.0.1:9200
-    check-enabled: false
+    # 短信模板
+    sms-template:
+      # 签名
+      signature:
+      # 模板code
+      templateCode:
+        # 登录短信、忘记密码模板编码
+        SMS_175435174:
+        # 修改密码短信模板编码
+        SMS_465391221:
+        # 注册账号短信模板编码
+        SMS_175430166:
   # 在线预览文件服务器地址配置
   file-view-domain: http://fileview.jeecg.com
   # minio文件上传
@@ -266,20 +277,11 @@ jeecg:
     password:
     type: STANDALONE
     enabled: true
-  # ai-chat
-  ai-chat:
-    # 是否开启；必须。
-    enabled: false
-    # openAi接口秘钥，填写自己的apiKey；必须。
-    apiKey: "？？？？"
-    # openAi域名，有代理就填代理的域名。默认：openAI官方apiHost
-    apiHost: "https://api.openai.com"
-    # 超时时间单位:s。默认 60s
-    timeout: 60
-    # 本地代理地址
-#    proxy:
-#      host: "http://127.0.0.1"
-#      port: "7890"
+  # 百度开放API配置
+  baidu-api:
+    app-id: ??
+    api-key: ??
+    secret-key: ??
 #cas单点登录
 cas:
   prefixUrl: http://cas.example.org:8443/cas
@@ -288,7 +290,6 @@ logging:
   level:
     org.flywaydb: debug
     org.jeecg.modules.system.mapper: info
-#swagger
 knife4j:
   #开启增强配置
   enable: true

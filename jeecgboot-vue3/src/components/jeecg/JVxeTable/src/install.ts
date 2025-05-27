@@ -1,8 +1,10 @@
 import type { App } from 'vue';
 // 引入 vxe-table
 import 'xe-utils';
+import VxeUIAll from 'vxe-pc-ui';
 import VXETable /*Grid*/ from 'vxe-table';
 import VXETablePluginAntd from 'vxe-table-plugin-antd';
+import 'vxe-pc-ui/lib/style.css';
 import 'vxe-table/lib/style.css';
 
 import JVxeTable from './JVxeTable';
@@ -27,6 +29,7 @@ export function registerJVxeTable(app: App) {
   // 注册自定义组件
   registerAllComponent();
   // 执行注册方法
+  app.use(VxeUIAll);
   app.use(VXETable, VXETableSettings);
   app.component('JVxeTable', JVxeTable);
 }
@@ -39,6 +42,12 @@ export function registerJVxeTable(app: App) {
 function preventClosingPopUp(this: any, params) {
   // 获取组件增强
   let col = params.column.params;
+  // update-begin--author:liaozhiyang---date:20250429---for：【issues/8178】使用原生vxe-table组件编辑模式下失去焦点报错
+  if (col === undefined) {
+    // 说明使用的是纯原生的vxe-table
+    return;
+  }
+  // update-end--author:liaozhiyang---date:20250429---for：【issues/8178】使用原生vxe-table组件编辑模式下失去焦点报错
   let { $event } = params;
   const interceptor = getEnhanced(col.type).interceptor;
   // 执行增强

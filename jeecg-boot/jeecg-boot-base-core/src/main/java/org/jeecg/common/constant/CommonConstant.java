@@ -144,7 +144,9 @@ public interface CommonConstant {
      */
     String STATUS_0 = "0";
     String STATUS_1 = "1";
-    
+    Integer STATUS_0_INT = 0;
+    Integer STATUS_1_INT = 1;
+
     /**
      * 同步工作流引擎1同步0不同步
      */
@@ -476,6 +478,11 @@ public interface CommonConstant {
     String FILE_EDITABLE = "editable";
 
     /**
+     * 文件 只读
+     */
+    String FILE_READONLY = "readonly";
+
+    /**
      * 登录失败，用于记录失败次数的key
      */
     String LOGIN_FAIL = "LOGIN_FAIL_";
@@ -596,6 +603,11 @@ public interface CommonConstant {
     * 修改手机号短信验证码redis-key的前缀
     */
    String CHANGE_PHONE_REDIS_KEY_PRE = "sys:cache:phone:change_phone_msg:";
+
+  /**
+   * 手机号短信验证码redis-key的前缀
+   */
+   String LOG_OFF_PHONE_REDIS_KEY_PRE = "sys:cache:phone:qqy_log_off_user_msg:";
 
     /**
      * 缓存用户最后一次收到消息通知的时间 KEY

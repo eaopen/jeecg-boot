@@ -11,6 +11,7 @@ import { useWebSocket } from './useWebSocket';
 import { getPrefix, getJVxeAuths } from '../utils/authUtils';
 import { excludeKeywords } from '../componentMap';
 import { useColumnsCache } from './useColumnsCache';
+import { isEnabledVirtualYScroll } from '/@/components/jeecg/JVxeTable/utils';
 
 export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps, refs: JVxeRefs, instanceRef: Ref) {
   let xTableTemp: VxeTableInstance & VxeTablePrivateMethods;
@@ -195,7 +196,9 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
       return getEnhanced(column.params.type).aopEvents.activeMethod!.apply(instanceRef.value, arguments as any) ?? true;
     })();
     if (!flag) {
-      getXTable().clearActived();
+      // -update-begin--author:liaozhiyang---date:20240619---for：【TV360X-1404】vxetable警告
+      getXTable().clearEdit();
+      // -update-end--author:liaozhiyang---date:20240619---for：【TV360X-1404】vxetable警告
     }
     return flag;
   }
@@ -421,11 +424,14 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
     let xTable = getXTable();
     let { setActive, index } = options;
     index = index === -1 ? index : xTable.internalData.tableFullData[index];
+    index = index == null ? -1 : index;
     // 插入行
     let result = await xTable.insertAt(rows, index);
     if (setActive) {
+      // -update-begin--author:liaozhiyang---date:20240619---for：【TV360X-1404】vxetable警告
       // 激活最后一行的编辑模式
-      xTable.setActiveRow(result.rows[result.rows.length - 1]);
+      xTable.setEditRow(result.rows[result.rows.length - 1], true);
+      // -update-end--author:liaozhiyang---date:20240619---for：【TV360X-1404】vxetable警告
     }
     await recalcSortNumber();
     return result;
@@ -450,11 +456,19 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
   /** 获取表格表单里的值 */
   function getValues(callback, rowIds) {
     let tableData = getTableData({ rowIds: rowIds });
-    callback('', tableData);
+    // update-begin--author:liaozhiyang---date:20241227---for：【issues/7631】JVxeTable组件的getValues回调函数参数修正
+    callback(tableData, tableData);
+    // update-end--author:liaozhiyang---date:20241227---for：【issues/7631】JVxeTable组件的getValues回调函数参数修正
+  }
+
+  type getTableDataOptions = {
+    rowIds?: string[];
+    // 是否保留新行的id
+    keepNewId?: boolean;
   }
 
   /** 获取表格数据 */
-  function getTableData(options: any = {}) {
+  function getTableData(options: getTableDataOptions = {}) {
     let { rowIds } = options;
     let tableData;
     // 仅查询指定id的行
@@ -470,7 +484,10 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
       // 查询所有行
       tableData = getXTable().getTableData().fullData;
     }
-    return filterNewRows(tableData, false);
+    return filterNewRows(tableData, {
+      keepNewId: options.keepNewId ?? false,
+      removeNewLine: false,
+    });
   }
 
   /** 仅获取新增的数据 */
@@ -513,23 +530,33 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
     return null;
   }
 
+  type filterNewRowsOptions = {
+    keepNewId?: boolean;
+    removeNewLine?: boolean;
+  } | boolean
+
   /**
    * 过滤添加的行
    * @param rows 要筛选的行数据
-   * @param remove true = 删除新增，false=只删除id
+   * @param optOrRm 如果传 boolean 则是 removeNewLine 参数（true = 删除新增，false=只删除id），如果传对象则是配置参数
    * @param handler function
    */
-  function filterNewRows(rows, remove = true, handler?: Fn) {
+  function filterNewRows(rows, optOrRm:filterNewRowsOptions = true, handler?: Fn) {
     let insertRecords = getXTable().getInsertRecords();
     let records: Recordable[] = [];
+    optOrRm = typeof optOrRm === 'boolean' ? { removeNewLine: optOrRm } : optOrRm;
+    // true = 删除新增，false=只删除id
+    let removeNewLine = optOrRm?.removeNewLine ?? true;
     for (let row of rows) {
       let item = cloneDeep(row);
       if (insertRecords.includes(row)) {
         handler ? handler({ item, row, insertRecords }) : null;
-        if (remove) {
+        if (removeNewLine) {
           continue;
         }
-        delete item.id;
+        if (!optOrRm?.keepNewId) {
+          delete item.id;
+        }
       }
       records.push(item);
     }
@@ -614,7 +641,7 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
   async function clearSelection() {
     const xTable = getXTable();
     let event = { $table: xTable, target: instanceRef.value };
-    if (props.rowSelectionType === JVxeTypes.rowRadio) {
+    if (['radio', JVxeTypes.rowRadio].includes(props.rowSelectionType ?? '')) {
       await xTable.clearRadioRow();
       handleVxeRadioChange(event);
     } else {
@@ -629,7 +656,7 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
    */
   function getSelectionData(isFull?: boolean) {
     const xTable = getXTable();
-    if (props.rowSelectionType === JVxeTypes.rowRadio) {
+    if (['radio', JVxeTypes.rowRadio].includes(props.rowSelectionType ?? '')) {
       let row = xTable.getRadioRecord(isFull);
       if (isNull(row)) {
         return [];
@@ -716,7 +743,7 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
   async function removeSelection() {
     let xTable = getXTable();
     let res;
-    if (props.rowSelectionType === JVxeTypes.rowRadio) {
+    if (['radio', JVxeTypes.rowRadio].includes(props.rowSelectionType ?? '')) {
       res = await xTable.removeRadioRow();
     } else {
       res = await xTable.removeCheckboxRow();
@@ -737,7 +764,7 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
       // 4.1.0
       //await xTable.updateCache();
       // 4.1.1
-      await xTable.cacheRowMap()
+      await xTable.cacheRowMap(true)
       // update-end--author:liaozhiyang---date:20231011---for：【QQYUN-5133】JVxeTable 行编辑升级
       return await xTable.updateData();
     }
@@ -762,6 +789,11 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
       if (xTable.keepSource) {
         sort(xTable.internalData.tableSourceData);
       }
+      // -update-begin--author:liaozhiyang---date:20240620---for：【TV360X-585】拖动字段虚拟滚动不好使
+      if (isEnabledVirtualYScroll(props, xTable)) {
+        await xTable.loadData(xTable.internalData.tableFullData);
+      }
+      // -update-end--author:liaozhiyang---date:20240620---for：【TV360X-585】拖动字段虚拟滚动不好使
       return await recalcSortNumber(force);
     }
   }
@@ -828,7 +860,7 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
   function getSelectedData(isFull?: boolean) {
     const xTable = getXTable();
     let rows:any[] = []
-    if (props.rowSelectionType === JVxeTypes.rowRadio) {
+    if (['radio', JVxeTypes.rowRadio].includes(props.rowSelectionType ?? '')) {
       let row = xTable.getRadioRecord(isFull);
       if (isNull(row)) {
         return [];

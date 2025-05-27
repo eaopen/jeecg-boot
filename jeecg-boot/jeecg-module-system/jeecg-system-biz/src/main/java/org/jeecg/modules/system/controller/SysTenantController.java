@@ -149,6 +149,21 @@ public class SysTenantController {
     }
 
     /**
+     * [QQYUN-11032]【jeecg】租户套餐管理增加初始化套餐包按钮
+     * @param tenantId
+     * @return
+     * @author chenrui
+     * @date 2025/2/6 18:24
+     */
+    @RequiresPermissions("system:tenant:syncDefaultPack")
+    @PostMapping(value = "/syncDefaultPack")
+    public Result<?> syncDefaultPack(@RequestParam(name="tenantId",required=true) Integer tenantId) {
+        //同步默认产品包
+        sysTenantPackService.syncDefaultPack(tenantId);
+        return Result.OK("操作成功");
+    }
+
+    /**
      *  编辑
      * @param
      * @return

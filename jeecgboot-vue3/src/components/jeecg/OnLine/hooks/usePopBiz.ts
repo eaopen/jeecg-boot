@@ -9,6 +9,8 @@ import { useRouter, useRoute } from 'vue-router';
 import { useMethods } from '/@/hooks/system/useMethods';
 import { importViewsFile, _eval } from '/@/utils';
 import {getToken} from "@/utils/auth";
+import {replaceUserInfoByExpression} from "@/utils/common/compUtils";
+import { isString } from '/@/utils/is';
 
 export function usePopBiz(ob, tableRef?) {
   // update-begin--author:liaozhiyang---date:20230811---for：【issues/675】子表字段Popup弹框数据不更新
@@ -177,10 +179,16 @@ export function usePopBiz(ob, tableRef?) {
    */
   function combineRowKey(record) {
     let res = record?.id || '';
-    Object.keys(record).forEach((key) => {
-      res = key == 'rowIndex' ? record[key] + res : res + record[key];
-    });
-    res = res.length > 50 ? res.substring(0, 50) : res;
+    if (props?.rowkey) {
+      // update-begin--author:liaozhiyang---date:20250415--for：【issues/3656】popupdict回显
+      res = record[props.rowkey];
+      // update-end--author:liaozhiyang---date:20250415--for：【issues/3656】popupdict回显
+    } else {
+      Object.keys(record).forEach((key) => {
+        res = key == 'rowIndex' ? record[key] + res : res + record[key];
+      });
+      res = res.length > 50 ? res.substring(0, 50) : res;
+    }
     return res;
   }
 
@@ -188,7 +196,8 @@ export function usePopBiz(ob, tableRef?) {
    * 加载列信息
    */
   function loadColumnsInfo() {
-    let url = `${configUrl.getColumns}${props.code}`;
+    const {code} = handleCodeParams(true)
+    let url = `${configUrl.getColumns}${code}`;
     //缓存key
     let groupIdKey = props.groupId ? `${props.groupId}${url}` : '';
     httpGroupRequest(() => defHttp.get({ url }, { isTransformResponse: false, successMessageMode: 'none' }), groupIdKey).then((res) => {
@@ -209,6 +218,15 @@ export function usePopBiz(ob, tableRef?) {
             currColumns[a].sortOrder = unref(iSorter).order === 'asc' ? 'ascend' : 'descend';
           }
         }
+        // update-begin--author:liaozhiyang---date:20250114---for：【issues/946】popup列宽和在线报表列宽读取配置
+        currColumns.forEach((item) => {
+          if (item.fieldWidth != null) {
+            if (isString(item.fieldWidth) && item.fieldWidth.trim().length == 0) return;
+            item.width = item.fieldWidth;
+            delete item.fieldWidth;
+          }
+        });
+        // update-end--author:liaozhiyang---date:20250114---for：【issues/946】popup列宽和在线报表列宽读取配置
         if (currColumns[0].key !== 'rowIndex') {
           currColumns.unshift({
             title: '序号',
@@ -240,6 +258,11 @@ export function usePopBiz(ob, tableRef?) {
     // 第一次加载 置空isTotal 在这里调用确保 该方法只是进入页面后 加载一次 其余查询不走该方法
     pagination.isTotal = '';
     let url = `${configUrl.getColumnsAndData}${props.id}`;
+
+    const {query} = handleCodeParams()
+    if (query) {
+      url = url + query
+    }
     //缓存key
     let groupIdKey = props.groupId ? `${props.groupId}${url}` : '';
     httpGroupRequest(() => defHttp.get({ url }, { isTransformResponse: false, successMessageMode: 'none' }), groupIdKey).then((res) => {
@@ -251,7 +274,16 @@ export function usePopBiz(ob, tableRef?) {
         // href 跳转
         const fieldHrefSlotKeysMap = {};
         fieldHrefSlots.forEach((item) => (fieldHrefSlotKeysMap[item.slotName] = item));
-        let currColumns = handleColumnHrefAndDict(metaColumnList, fieldHrefSlotKeysMap);
+        let currColumns: any = handleColumnHrefAndDict(metaColumnList, fieldHrefSlotKeysMap);
+        // update-begin--author:liaozhiyang---date:20250114---for：【issues/946】popup列宽和在线报表列宽读取配置
+        currColumns.forEach((item) => {
+          if (isString(item.fieldWidth) && item.fieldWidth.trim().length == 0) return;
+          if (item.fieldWidth != null) {
+            item.width = item.fieldWidth;
+            delete item.fieldWidth;
+          }
+        });
+        // update-end--author:liaozhiyang---date:20250114---for：【issues/946】popup列宽和在线报表列宽读取配置
 
         // popup需要序号， 普通列表不需要
         if (clickThenCheckFlag === true) {
@@ -279,6 +311,39 @@ export function usePopBiz(ob, tableRef?) {
         //update-end-author:taoyan date:20220401 for: VUEN-583【vue3】JeecgBootException: sql黑名单校验不通过,请联系管理员!,前台无提示
       }
     });
+  }
+
+  // 处理动态参数和系统变量
+  function handleCodeParams(onlyCode: boolean = false) {
+    if (!props.code) {
+      return {code: '', query: ''}
+    }
+    const firstIndex = props.code.indexOf('?')
+    if (firstIndex === -1) {
+      return {code: props.code, query: ''}
+    }
+    const code = props.code.substring(0, firstIndex)
+    if (onlyCode) {
+      return {code: code, query: ''}
+    }
+    const queryOrigin = props.code.substring(firstIndex, props.code.length);
+    let query: string
+    // 替换系统变量
+    query = replaceUserInfoByExpression(queryOrigin)
+    // 获取表单值
+    if (typeof props.getFormValues === 'function') {
+      const values = props.getFormValues()
+      // 替换动态参数，如果有 ${xxx} 则替换为实际值
+      query = query.replace(/\${([^}]+)}/g, (_$0, $1) => {
+        if (values[$1] == null) {
+          return ''
+        }
+        return values[$1]
+      });
+
+    }
+
+    return {code, query, queryOrigin}
   }
 
   /**
@@ -502,10 +567,15 @@ export function usePopBiz(ob, tableRef?) {
     // 【VUEN-1568】如果选中了某些行，就只导出选中的行
     let keys = unref(checkedKeys);
     if (keys.length > 0) {
-      params['force_id'] = keys
+      keys = keys
         .map((i) => selectRows.value.find((item) => combineRowKey(item) === i)?.id)
-        .filter((i) => i != null && i !== '')
-        .join(',');
+        .filter((i) => i != null && i !== '');
+      // 判断是否有ID字段
+      if (keys.length === 0) {
+        createMessage.warning('由于数据中缺少ID字段，故无法使用选中导出功能');
+        return;
+      }
+      params['force_id'] = keys.join(',');
     }
     handleExportXls(title.value, url, params);
   }
@@ -592,6 +662,10 @@ export function usePopBiz(ob, tableRef?) {
     // update-begin--author:liaozhiyang---date:20240603---for：【TV360X-578】online报表SQL翻译，第二页不翻页数据
     let url = `${configUrl.getColumnsAndData}${unref(cgRpConfigId)}`;
     // update-end--author:liaozhiyang---date:20240603---for：【TV360X-578】online报表SQL翻译，第二页不翻页数据
+    const {query} = handleCodeParams()
+    if (query) {
+      url = url + query
+    }
     //缓存key
     let groupIdKey = props.groupId ? `${props.groupId}${url}${JSON.stringify(params)}` : '';
     httpGroupRequest(() => defHttp.get({ url, params }, { isTransformResponse: false, successMessageMode: 'none' }), groupIdKey).then((res) => {
