@@ -87,15 +87,17 @@ export const batchDelete = (params, handleSuccess) => {
  * @param isUpdate
  */
 export const saveOrUpdate = (params, isUpdate) => {
-  let url = isUpdate ? Api.edit : Api.save;
-  return defHttp.post({ url: url, params }, { isTransformResponse: false });
+  if (isUpdate) {
+    return defHttp.put({ url: Api.edit, params }, { isTransformResponse: false });
+  }
+  return defHttp.post({ url: Api.save, params }, { isTransformResponse: false });
 }
 
 /**
  * 全部权限列表接口
  * @param params
  */
-export const getApiList = (params) => defHttp.get({ url: Api.apiList, params });
+export const getApiList = (params) => defHttp.get({ url: Api.apiList, params }, { isTransformResponse: false });
 
 /**
  * 获取已授权项目的接口
